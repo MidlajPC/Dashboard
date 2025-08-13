@@ -1,0 +1,8 @@
+const mongoose = require("mongoose");
+const dbconnect = () => {
+  mongoose
+    .connect(process.env.MONGODB_URI)
+    .then((res) => console.log("db is connected"))
+    .catch((err) => console.log(err));
+};
+module.exports = dbconnect;
