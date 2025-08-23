@@ -50,9 +50,7 @@ const Login = () => {
         .then((res) => {
           toast.success("welcome");
           console.log(res);
-          sessionStorage.setItem("userId", res.data.user.id);
-          sessionStorage.setItem("role", res.data.user.role);
-          sessionStorage.setItem("authToken", res.data.token);
+          localStorage.setItem("userId", res.data.user.id);
           setuserDetails(res.data.user);
           navigate("/");
         })
@@ -63,7 +61,6 @@ const Login = () => {
       console.log(error);
     }
   };
-  console.log(err);
   return (
     <div>
       <div

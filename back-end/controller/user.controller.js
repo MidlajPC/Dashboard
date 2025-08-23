@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const userModel = require("../model/user.model");
+const userLogModel = require("../model/userLogModel");
 
 module.exports.login = async (req, res) => {
   try {
@@ -27,9 +28,31 @@ module.exports.login = async (req, res) => {
       secret,
       { expiresIn: "1d" }
     );
+    res.cookie("authToken", token, {
+      httpOnly: true,
+      // secure:true, // use after hosting and making the api https
+      sameSite: "strict",
+      maxAge: 12 * 60 * 60 * 1000
+    });
+    const userLog = userLogModel.findOne({ user: user.id });
+    if (userLog) {
+      await userLogModel.updateOne(
+        { user: user.id },
+        { $push: { actions: { action: "login", details: `logged in` } } }
+      );
+    } else {
+      await userLogModel.create({
+        user: user.id,
+        actions: [
+          {
+            action: "login",
+            details: "logged in"
+          }
+        ]
+      });
+    }
     res.status(200).json({
       message: "success",
-      token,
       user: {
         id: user.id,
         name: user.name,

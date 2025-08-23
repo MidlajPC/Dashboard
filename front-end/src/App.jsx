@@ -4,16 +4,24 @@ import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Home from "./pages/Home";
+import Overview from "./components/Overview";
+import Map from "./components/Map";
+import UserLogs from "./components/admin/UserLogs";
+import UserManagement from "./components/admin/UserManagement";
 
 const App = () => {
   return (
     <div>
-      <ToastContainer/>
+      <ToastContainer />
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route element={<ProtectedRoutes/>}>
-        <Route path="/" element={<Home/>}>
-        </Route>
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/" element={<Home />}>
+            <Route index element={<Overview />} />
+            <Route path="livemap" element={<Map />} />
+            <Route path="userlog" element={<UserLogs />} />
+            <Route path="usermanagement" element={<UserManagement />} />
+          </Route>
         </Route>
       </Routes>
     </div>
