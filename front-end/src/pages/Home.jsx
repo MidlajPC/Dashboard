@@ -52,8 +52,8 @@ const Home = () => {
     >
       <Header />
       <div className="flex flex-1 pb-2 ">
-        <div className="bg-black/10 w-[230px] mx-2 rounded-sm backdrop-blur-2xl flex flex-col justify-between  ">
-          <div className="">
+        <div className="bg-black/10 w-[50px] sm:w-[150px] md:w-[180px] lg:w-[230px] mx-2 rounded-sm backdrop-blur-2xl flex flex-col justify-between  ">
+          <div className="flex flex-col gap-5">
             <Link to={"/"} className="">
               <div className="sidebar-div">
                 <MdDashboard className="icons" />

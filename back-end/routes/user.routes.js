@@ -5,8 +5,9 @@ const authenticate = require("../middleware/auth.middleware");
 const userLogController = require("../controller/userLog.controller");
 
 router.post("/login", userController.login);
-router.get("/me", authenticate,userController.getme);
+router.get("/me", authenticate, userController.getme);
 router.post("/logout", authenticate, userLogController.logout);
 router.get("/getlogs", authenticate, userLogController.getLogs);
+router.get("/getusers", authenticate, userController.getUsers);
 
 module.exports = router;

@@ -36,8 +36,7 @@ const UserLogs = () => {
           onChange={(e) => setsearch(e.target.value)}
         />
       </div>
-      <div className="h-[calc(100vh-180px)] rounded-lg">
-        <div className="tbldiv overflow-auto h-full">
+        <div className="tbldiv">
           <table className="tbl">
             <thead className="tblhead">
               <tr>
@@ -68,7 +67,7 @@ const UserLogs = () => {
                       <td className="tblhdng max-w-[500px] break-words ">
                         {action.details}
                       </td>
-                      <td className="tbl">
+                      <td className="tblhdng">
                         {new Date(action.createdAt).toLocaleString()}
                       </td>
                     </tr>
@@ -77,7 +76,6 @@ const UserLogs = () => {
             </tbody>
           </table>
         </div>
-      </div>
     </div>
   );
 };

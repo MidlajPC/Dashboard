@@ -79,3 +79,17 @@ module.exports.getme = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+module.exports.getUsers = async (req, res) => {
+  try {
+    console.log("object");
+    const users = await userModel.find().select("-password");
+    console.log(users);
+    if (users.length === 0) {
+      res.status(401).json({ message: "couldn't find any users" });
+    } else {
+      res.status(200).json({ message: "users found", data: users });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
