@@ -9,5 +9,8 @@ router.get("/me", authenticate, userController.getme);
 router.post("/logout", authenticate, userLogController.logout);
 router.get("/getlogs", authenticate, userLogController.getLogs);
 router.get("/getusers", authenticate, userController.getUsers);
+router.post("/adduser", authenticate, userController.adduser);
+router.put("/edituser/:id", authenticate, userController.updateuser);
+router.delete("/deleteuser/:id", authenticate, userController.deleteUser);
 
 module.exports = router;
