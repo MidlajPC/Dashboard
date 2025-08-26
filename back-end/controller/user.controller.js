@@ -27,7 +27,7 @@ module.exports.login = async (req, res) => {
         email: user.email
       },
       secret,
-      { expiresIn: "1d" }
+      { expiresIn: "12h" }
     );
     res.cookie("authToken", token, {
       httpOnly: true,
@@ -38,12 +38,12 @@ module.exports.login = async (req, res) => {
     const userLog = await userLogModel.findOne({ user: user.id });
     if (userLog) {
       await userLogModel.updateOne(
-        { user: user.id },
+        { user: user._id },
         { $push: { actions: { action: "login", details: `logged in` } } }
       );
     } else {
       await userLogModel.create({
-        user: user.id,
+        user: user._id,
         actions: [
           {
             action: "login",
@@ -140,13 +140,11 @@ module.exports.adduser = async (req, res) => {
         ]
       });
     }
-    res
-      .status(200)
-      .json({
-        message: "new user created",
-        users: allUsers,
-        pass: plainPassword
-      });
+    res.status(200).json({
+      message: "new user created",
+      users: allUsers,
+      pass: plainPassword
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -198,7 +196,7 @@ module.exports.updateuser = async (req, res) => {
         );
       } else {
         await userLogModel.create({
-          user: req.userdetails.id,
+          user: req.currentUser.id,
           actions: [
             {
               action: "updated a user",
@@ -245,7 +243,7 @@ module.exports.deleteUser = async (req, res) => {
         actions: [
           {
             action: "deleted a user",
-            details: `Created user: name=${existingUserWithoutPass.name},
+            details: `Deleted user: name=${existingUserWithoutPass.name},
              email=${existingUserWithoutPass.email},
               role=${existingUserWithoutPass.role},
                status=${existingUserWithoutPass.activityStatus}`

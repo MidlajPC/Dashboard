@@ -5,6 +5,13 @@ import "../../css/Bg.css";
 import { toast } from "react-toastify";
 import { RiArrowDownWideLine } from "react-icons/ri";
 import axios from "../../config/axios.config";
+import { FaFilePdf } from "react-icons/fa6";
+import { BsFiletypeXlsx } from "react-icons/bs";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+// import "jspdf-autotable";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 const UserManagement = () => {
   const [search, setsearch] = useState("");
   const [users, setusers] = useState([]);
@@ -20,7 +27,7 @@ const UserManagement = () => {
     email: "",
     phone: "",
     location: "",
-    role: "",
+    role: ""
   });
   const [isActivityStatusDropdownOpen, setisActivityStatusDropdownOpen] =
     useState(false);
@@ -102,9 +109,11 @@ const UserManagement = () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
+  const [editId, seteditId] = useState(null);
   const handleEdit = (user) => {
     setisEdit(true);
     setisUserActive(user.activityStatus);
+    seteditId(user._id);
     setformvalue({
       name: user.name,
       email: user.email,
@@ -142,7 +151,7 @@ const UserManagement = () => {
           email: "",
           phone: "",
           location: "",
-          role: "",
+          role: ""
         });
         toast.success("New User Added");
       })
@@ -155,10 +164,11 @@ const UserManagement = () => {
     e.preventDefault();
     console.log(formvalue);
     axios
-      .put(`/edituser/${formvalue._id}`, formvalue)
+      .put(`/edituser/${editId}`, formvalue)
       .then((res) => {
         console.log(res);
         setusers(res.data.users);
+        setisEdit(false);
         toggleaddUser();
         setformvalue({
           name: "",
@@ -174,6 +184,70 @@ const UserManagement = () => {
         console.log(err.message);
         toast.error("Failed to Update User!");
       });
+  };
+  const downloadPdf = () => {
+    const doc = new jsPDF();
+    doc.text("User List", 5, 15);
+    const tabledata = filteredUsers.map((user) => [
+      user._id,
+      user.name,
+      user.email,
+      user.phone,
+      user.location,
+      user.role,
+      user.activityStatus ? "Active" : "Inactive"
+    ]);
+    autoTable(doc, {
+      head: [
+        [
+          "_id",
+          "Full Name",
+          "Email",
+          "Phone",
+          "Location",
+          "Role",
+          "Activity Status"
+        ]
+      ],
+      body: tabledata,
+      startY: 20,
+      margin: { left: 5 },
+      theme: "grid",
+      headStyles: {
+        fillColor: [41, 128, 185],
+        textColor: [255, 255, 255],
+        fontStyle: "bold"
+      },
+      bodyStyles: {
+        fontSize: 8,
+        cellPadding: 2
+      },
+      alternateRowStyles: {
+        fillColor: [245, 245, 245],
+        cellWidth: "wrap"
+      },
+      columnStyles: {
+        0: { cellWidth: 30 },
+        1: { cellWidth: 40 },
+        2: { cellWidth: 40 },
+        3: { cellWidth: 30 },
+        4: { cellWidth: 20 },
+        5: { cellWidth: 20 },
+        6: { cellWidth: 20 }
+      }
+    });
+    doc.save("User List.pdf");
+  };
+  const downloadExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(filteredUsers);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "User List");
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array"
+    });
+    const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(data, "User List.xlsx");
   };
   return (
     <div className="m-2">
@@ -267,11 +341,21 @@ const UserManagement = () => {
             </div>
           )}
         </div>
-        {/*  add new user Section */}
+        {/*  add new user section */}
         <div className="dropdown-prnt-div ">
           <button className="add-user-btn" onClick={toggleaddUser}>
             Add User
           </button>
+        </div>
+        {/* pdf and excel dwnld section */}
+        <div className=" ml-1 ">
+          <FaFilePdf onClick={downloadPdf} className="h-[35px] w-[30px]" />
+        </div>
+        <div className="">
+          <BsFiletypeXlsx
+            onClick={downloadExcel}
+            className="h-[35px] w-[30px]"
+          />
         </div>
       </div>
       {/* add user modal */}
