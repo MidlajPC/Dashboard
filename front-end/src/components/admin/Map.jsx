@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "../../config/axios.config";
 import {
   LayersControl,
   MapContainer,
@@ -8,7 +9,8 @@ import {
   useMap
 } from "react-leaflet";
 const Map = () => {
-  const ZoomToMarker = (position) => {
+  const ZoomToMarker = ({position}) => {
+    console.log(position);
     const map = useMap();
     map.flyTo(position, 16, {
       animate: true,
@@ -16,7 +18,15 @@ const Map = () => {
       easeLinearity: 0.25
     });
   };
-
+  const [bots, setbots] = useState([]);
+  const [zoomTo, setzoomTo] = useState(null);
+  const [selectedPin, setselectedPin] = useState(null);
+  useEffect(() => {
+    axios.get("/getbots").then((res) => {
+      console.log(res);
+      setbots(res.data.bots);
+    });
+  }, []);
   return (
     <div className="m-2 flex flex-1 ">
       <div className=" w-full h-[calc(100vh-140px)] ">
@@ -43,10 +53,21 @@ const Map = () => {
               />
             </LayersControl.BaseLayer>
           </LayersControl>
-          <Marker position={[51.505, -0.09]}>
-            <Popup>a marker</Popup>
-          </Marker>
-          {/* <ZoomToMarker position={[51.505, -0.09]} /> */}
+          {bots.map((bot, idx) => (
+            <Marker
+              key={idx}
+              position={[bot.Position.lat[0], bot.Position.lng[0]]}
+              eventHandlers={{
+                click: () => {
+                  setzoomTo([bot.Position.lat[0], bot.Position.lng[0]]);
+                  setselectedPin(bot);
+                }
+              }}
+            >
+              <Popup>{bot.name}</Popup>
+            </Marker>
+          ))}
+          {zoomTo && <ZoomToMarker position={zoomTo} />}
         </MapContainer>
       </div>
     </div>
