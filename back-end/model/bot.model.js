@@ -1,4 +1,16 @@
 const mongoose = require("mongoose");
+const botuserSchema = mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user"
+  },
+  date: {
+    type: Date
+  },
+  runtime: {
+    type: Number
+  }
+});
 const botSchema = mongoose.Schema({
   name: {
     type: String,
@@ -14,10 +26,11 @@ const botSchema = mongoose.Schema({
       type: [Number],
       required: true
     },
-    lg: {
+    lng: {
       type: [Number],
       required: true
-    }
+    },
+    city: { type: String, required: true }
   },
   Status: {
     type: String
@@ -33,7 +46,9 @@ const botSchema = mongoose.Schema({
   },
   Robotuptime: {
     type: Number
-  }
+  },
+  operators: [botuserSchema],
+  currentOperator: { type: mongoose.Schema.Types.ObjectId, ref: "user" }
 });
 const botModel = mongoose.model("bot", botSchema);
 module.exports = botModel;

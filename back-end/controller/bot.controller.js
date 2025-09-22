@@ -1,7 +1,10 @@
 const botModel = require("../model/bot.model");
 module.exports.getbots = async (req, res) => {
   try {
-    const bots = await botModel.find();
+    const bots = await botModel
+      .find()
+      .populate("operators.user")
+      .populate("currentOperator","name");
     if (bots) {
       res.status(200).json({ message: "bots found", bots: bots });
     } else {

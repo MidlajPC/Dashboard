@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "../../config/axios.config";
+import "../../css/map.css";
 import {
   LayersControl,
   MapContainer,
@@ -24,7 +25,18 @@ const Map = () => {
         easeLinearity: 0.25
       });
     }, [position, map]);
-    return null
+    return null;
+  };
+  const chennaiCenter = [13.0827, 80.2707];
+  const kochiCenter = [9.9312, 76.2673];
+  const FlyToCity = ({ city }) => {
+    const map = useMap();
+    useEffect(() => {
+      let center = chennaiCenter;
+      if (city === "Kochi") center = kochiCenter;
+      map.flyTo(center, 12, { animate: true });
+    }, [city, map]);
+    return null;
   };
   const [bots, setbots] = useState([]);
   const [zoomTo, setzoomTo] = useState(null);
@@ -67,25 +79,34 @@ const Map = () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
-  const uniqueCities = ["All", ...new Set(bots.map((bot) => bot.city))];
-  const uniqueOprtr = ["All", ...new Set(bots.map((bot) => bot.operator))];
-  const [selectedCity, setselectedCity] = useState("");
+  const uniqueCities = [
+    "All",
+    ...new Set(bots.map((bot) => bot.Position.city))
+  ];
+  const uniqueOprtr = [
+    "All",
+    ...new Set(bots.map((bot) => bot.currentOperator.name))
+  ];
+  console.log(uniqueCities, uniqueOprtr);
+  const [selectedCity, setselectedCity] = useState("All");
   const [selectedOprtr, setselectedOprtr] = useState("");
   const [filteredBots, setfilteredBots] = useState([]);
   useEffect(() => {
     const handleFilteredBots = () => {
       let filtered = bots;
       if (selectedCity && selectedCity !== "All") {
-        filtered = filtered.filter((bot) => bot.city === selectedCity);
+        filtered = filtered.filter((bot) => bot.Position.city === selectedCity);
       }
       if (selectedOprtr && selectedOprtr !== "All") {
-        filtered = filtered.filter((bot) => bot.operator === selectedOprtr);
+        filtered = filtered.filter(
+          (bot) => bot.currentOperator.name === selectedOprtr
+        );
       }
       setfilteredBots(filtered);
     };
     handleFilteredBots();
-    setzoomTo([13.0827, 80.2707]);
   }, [bots, selectedCity, selectedOprtr]);
+  console.log(selectedPin);
   return (
     <div className="m-2 flex flex-1 flex-col ">
       <div className="flex mb-1 gap-1">
@@ -170,50 +191,117 @@ const Map = () => {
           )}
         </div>
       </div>
-      <div className=" w-full h-[calc(100vh-190px)] ">
-        <MapContainer
-          center={[13.0827, 80.2707]}
-          zoom={13}
-          className="h-full w-full"
-          // scrollWheelZoom={false}
-        >
-          <LayersControl position="bottomleft">
-            <LayersControl.BaseLayer checked name="OpenSreetMap">
-              <TileLayer
-                // attribution="&copy; openstreetmap contributors"
-                // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                url="https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z} "
-              />
-            </LayersControl.BaseLayer>
-            <LayersControl.BaseLayer name="sataliteMap">
-              <TileLayer
-                url="https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
-                // url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                maxZoom={20}
-                subdomains={["mt1", "mt2", "mt3"]}
-              />
-            </LayersControl.BaseLayer>
-          </LayersControl>
-          {filteredBots.map((bot, idx) => (
-            <Marker
-              key={idx}
-              position={[bot.Position.lat[0], bot.Position.lng[0]]}
-              eventHandlers={{
-                click: () => {
-                  setzoomTo([bot.Position.lat[0], bot.Position.lng[0]]);
-                  setselectedPin(bot);
-                },
-                popupclose: () => {
-                  setselectedPin(null);
-                  setzoomTo(null);
-                }
-              }}
-            >
-              <Popup>{bot.name}</Popup>
-            </Marker>
-          ))}
-          {zoomTo && <ZoomToMarker position={zoomTo} z={16} />}
-        </MapContainer>
+      <div className="w-full h-[calc(100vh-190px)] flex flex-col overflow-y-auto ">
+        <div className={` w-full ${selectedPin ? "h-3/4" : "flex-1"} `}>
+          <MapContainer
+            center={chennaiCenter}
+            zoom={13}
+            className="h-full w-full"
+            scrollWheelZoom={false}
+          >
+            <LayersControl position="bottomleft">
+              <LayersControl.BaseLayer checked name="OpenSreetMap">
+                <TileLayer
+                  // attribution="&copy; openstreetmap contributors"
+                  // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  url="https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z} "
+                />
+              </LayersControl.BaseLayer>
+              <LayersControl.BaseLayer name="sataliteMap">
+                <TileLayer
+                  url="https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+                  // url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                  maxZoom={20}
+                  subdomains={["mt1", "mt2", "mt3"]}
+                />
+              </LayersControl.BaseLayer>
+            </LayersControl>
+            {filteredBots.map((bot, idx) => (
+              <Marker
+                key={idx}
+                position={[bot.Position.lat[0], bot.Position.lng[0]]}
+                eventHandlers={{
+                  click: () => {
+                    setzoomTo([bot.Position.lat[0], bot.Position.lng[0]]);
+                    setselectedPin(bot);
+                  },
+                  popupclose: () => {
+                    setselectedPin(null);
+                    setzoomTo(null);
+                  }
+                }}
+              >
+                <Popup>{bot.name}</Popup>
+              </Marker>
+            ))}
+            <FlyToCity city={selectedCity} />
+            {zoomTo && <ZoomToMarker position={zoomTo} z={16} />}
+          </MapContainer>
+        </div>
+        {selectedPin && (
+          <div className="grid grid-cols-4 gap-1 overflow-y-auto pb-2">
+            <div className="d-card bg-amber-300 col-span-4 pl-[10px] pt-[2px] h-[30px]">
+              Id: {selectedPin.UniqueCode}
+            </div>
+            <div className="d-card bg-amber-200 pl-[10px] pt-[10px] h-[50px]">
+              Uptime: {selectedPin.Robotuptime}
+            </div>
+            <div className="d-card bg-amber-200 pl-[10px] pt-[10px] h-[50px]">
+              Battery: {selectedPin.Battery}
+            </div>
+            <div className="d-card bg-amber-200 pl-[10px] pt-[10px] h-[50px]">
+              Didtance Covered: {selectedPin.DistanceCovered}
+            </div>
+            <div className="d-card bg-amber-200 pl-[10px] pt-[10px] h-[50px]">
+              Wastetraystatus: {selectedPin.Wastetraystatus}
+            </div>
+            <div className="col-span-4 flex gap-1">
+              <div className=" bg-white rounded-sm overflow-hidden flex-1">
+                <table className="tbl">
+                  <thead className="tblhead h-[25px]">
+                    <tr className="tblhdng">
+                      <th className="pl-5">Date</th>
+                      <th>User Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {selectedPin.operators.map((operator, idx) => (
+                      <tr key={idx}>
+                        <td className="pl-5">
+                          {new Date(operator.date).toLocaleString("en-US", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true
+                          })}
+                        </td>
+                        <td>{operator.user.name}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className=" bg-white w-[100px] flex-1 overflow-hidden !rounded-sm">
+                <table className="tbl rounded-2xl ">
+                  <thead className="tblhead h-[25px]">
+                    <tr className="tblhdng">
+                      <th className="pl-5">Runtime</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {selectedPin.operators.map((operator, idx) => (
+                      <tr key={idx}>
+                        <td className="pl-5">{operator.runtime}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
