@@ -8,6 +8,7 @@ import Overview from "./components/Overview";
 import Map from "./components/admin/Map";
 import UserLogs from "./components/admin/UserLogs";
 import UserManagement from "./components/admin/UserManagement";
+import Analysis from "./components/admin/Analysis";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
             <Route index element={<Overview />} />
             <Route path="livemap" element={<Map />} />
             <Route path="userlog" element={<UserLogs />} />
+            <Route path="analysis" element={<Analysis />} />
             <Route path="usermanagement" element={<UserManagement />} />
           </Route>
         </Route>

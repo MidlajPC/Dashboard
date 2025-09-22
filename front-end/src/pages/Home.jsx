@@ -9,6 +9,7 @@ import { MdDashboard } from "react-icons/md"; // Overview
 import { FaMapMarkedAlt } from "react-icons/fa"; // Live Map
 import { FaUsersCog } from "react-icons/fa"; // User Management
 import { FaClipboardList } from "react-icons/fa"; // User Logs
+import { TbDeviceAnalytics } from "react-icons/tb";
 import { IoSettingsSharp } from "react-icons/io5"; // Settings
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
@@ -70,6 +71,12 @@ const Home = () => {
               <div className="sidebar-div">
                 <FaUsersCog className="icons" />
                 <span className="sidebar-text ">User Management</span>
+              </div>
+            </Link>
+            <Link to={"analysis"} className="">
+              <div className="sidebar-div">
+                <TbDeviceAnalytics className="icons" />
+                <span className="sidebar-text ">Analysis</span>
               </div>
             </Link>
             <Link to={"userlog"} className="">

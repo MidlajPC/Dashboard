@@ -24,6 +24,16 @@
   color: black;
   z-index: 9999;
 }
+.inner-options-div {
+  position: absolute;
+  margin-top: 4px;
+  margin-left: 130px;
+  width: 150px;
+  border-radius: 8px;
+  background: radial-gradient(circle at top, #3a6db0, #1b1b1b);
+  color: black;
+  z-index: 9999;
+}
 .options-div-map {
   position: absolute;
   margin-top: 4px;
