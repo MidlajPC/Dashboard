@@ -203,14 +203,14 @@ const Map = () => {
               <LayersControl.BaseLayer checked name="OpenSreetMap">
                 <TileLayer
                   // attribution="&copy; openstreetmap contributors"
-                  // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  url="https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z} "
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  // url="https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z} "
                 />
               </LayersControl.BaseLayer>
               <LayersControl.BaseLayer name="sataliteMap">
                 <TileLayer
-                  url="https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
-                  // url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                  // url="https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+                  url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                   maxZoom={20}
                   subdomains={["mt1", "mt2", "mt3"]}
                 />
