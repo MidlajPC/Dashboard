@@ -7,7 +7,6 @@ export const UserProvider = ({ children }) => {
     axios
       .get("/me")
       .then((res) => setuserDetails(res.data.user))
-      console.log(userDetails)
       .catch((err) => {
         console.log("session expired", err);
         setuserDetails(null);

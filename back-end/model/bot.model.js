@@ -23,7 +23,8 @@ const positionSchema = mongoose.Schema({
 });
 const dataschema = mongoose.Schema({
   operator: {
-    type: { type: mongoose.Schema.Types.ObjectId, ref: "user" }
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user"
   },
   date: {
     type: Date,
@@ -56,8 +57,11 @@ const botSchema = mongoose.Schema({
     required: true,
     unique: true
   },
-  currentuser: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-  data: dataschema,
+  currentuser: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user"
+  },
+  data: [dataschema],
   operators: [botuserSchema]
 });
 const botModel = mongoose.model("bot", botSchema);
