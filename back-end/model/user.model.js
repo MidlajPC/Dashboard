@@ -43,12 +43,18 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 );
 userSchema.pre("save", async function (next) {
+  console.log("pre-save middleware triggered")
   if (!this.isModified("password")) {
-    return;
+    console.log("no changes ditected")
+    return next();
   }
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
+  try {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password.toString(), salt);
+    next();
+  } catch (error) {
+    next(err);
+  }
 });
 const userModel = mongoose.model("user", userSchema);
 module.exports = userModel;

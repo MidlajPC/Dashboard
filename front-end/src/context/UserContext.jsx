@@ -3,21 +3,21 @@ import axios from "../config/axios.config";
 const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [userDetails, setuserDetails] = useState(null);
+  const mefetch = async () => {
+    axios
+      .get("/me")
+      .then((res) => setuserDetails(res.data.user))
+      console.log(userDetails)
+      .catch((err) => {
+        console.log("session expired", err);
+        setuserDetails(null);
+      });
+  };
   useEffect(() => {
-    const token = sessionStorage.getItem("authToken");
-    if (token) {
-      axios
-        .get("/me")
-        .then((res) => setuserDetails(res.data.user))
-        .catch((err) => {
-          console.log("session expired", err);
-          sessionStorage.removeItem("authToken");
-          setuserDetails(null);
-        });
-    }
+    mefetch();
   }, []);
   return (
-    <UserContext.Provider value={{ userDetails, setuserDetails }}>
+    <UserContext.Provider value={{ userDetails, setuserDetails, mefetch }}>
       {children}
     </UserContext.Provider>
   );

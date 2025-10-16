@@ -7,6 +7,7 @@ const crypto = require("crypto");
 module.exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(req.body);
     const user = await userModel.findOne({ email: email });
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
@@ -66,6 +67,9 @@ module.exports.login = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+};
+module.exports.auth = async (req, res) => {
+  res.status(200).json({ message: "authenticated" });
 };
 module.exports.getme = async (req, res) => {
   try {
@@ -149,7 +153,7 @@ module.exports.adduser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-module.exports.updateuser = async (req, res) => {
+module.exports.edituser = async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
@@ -208,6 +212,76 @@ module.exports.updateuser = async (req, res) => {
       res.status(200).json({
         message: "User updated successfully!",
         users: allUsers
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+module.exports.profileupdate = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+    console.log(id, data);
+    const update = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      password: data.password
+    };
+    if (update.password) {
+      const salt = await bcrypt.genSalt();
+      update.password = await bcrypt.hash(update.password.toString(), salt);
+    }
+    const existingUser = await userModel.findById(id);
+    const changedFields = {};
+    for (i in update) {
+      if (update[i] !== existingUser[i]) {
+        if (i !== "password") {
+          changedFields[i] = {
+            from: existingUser[i],
+            to: update[i]
+          };
+        }
+      }
+    }
+    const logDetails = Object.entries(changedFields)
+      .map(([key, { from, to }]) => `${key}:"${from}"→"${to}" `)
+      .join(", ");
+    if (!existingUser) {
+      return res.status(404).json({ message: "User not found!" });
+    } else {
+      existingUser;
+      await userModel.findByIdAndUpdate(id, update);
+      const allUsers = await userModel.find().select("-password");
+      const userlog = await userLogModel.findOne({ user: req.currentUser.id });
+      if (userlog) {
+        await userLogModel.updateOne(
+          { user: req.currentUser.id },
+          {
+            $push: {
+              actions: [
+                {
+                  action: "updated Profile",
+                  details: `${existingUser.email} updated with changes: ${logDetails}`
+                }
+              ]
+            }
+          }
+        );
+      } else {
+        await userLogModel.create({
+          user: req.currentUser.id,
+          actions: [
+            {
+              action: "updated a user",
+              details: `${existingUser.email} updated with changes: ${logDetails}`
+            }
+          ]
+        });
+      }
+      res.status(200).json({
+        message: "Profile updated successfully!"
       });
     }
   } catch (error) {

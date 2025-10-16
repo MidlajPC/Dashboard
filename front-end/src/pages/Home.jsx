@@ -28,6 +28,8 @@ const Home = () => {
         return "User Management";
       case "/userlog":
         return "User Logs";
+      case "/analysis":
+        return "Analysis"
       default:
         return "Unknown";
     }
@@ -57,32 +59,32 @@ const Home = () => {
           <div className="flex flex-col gap-5">
             <Link to={"/"} className="">
               <div className="sidebar-div">
-                <MdDashboard className="icons" />
-                <span className="sidebar-text ">Overview</span>
+                <MdDashboard className="icons text-[var(--text-color)]" />
+                <span className="sidebar-text text-[var(--text-color)] ">Overview</span>
               </div>
             </Link>
             <Link to={"livemap"} className="">
               <div className="sidebar-div">
-                <FaMapMarkedAlt className="icons" />
-                <span className="sidebar-text ">Live Map</span>
+                <FaMapMarkedAlt className="icons text-[var(--text-color)]" />
+                <span className="sidebar-text text-[var(--text-color)] ">Live Map</span>
               </div>
             </Link>
             <Link to={"usermanagement"} className="">
               <div className="sidebar-div">
-                <FaUsersCog className="icons" />
-                <span className="sidebar-text ">User Management</span>
+                <FaUsersCog className="icons text-[var(--text-color)]" />
+                <span className="sidebar-text text-[var(--text-color)] ">User Management</span>
               </div>
             </Link>
             <Link to={"analysis"} className="">
               <div className="sidebar-div">
-                <TbDeviceAnalytics className="icons" />
-                <span className="sidebar-text ">Analysis</span>
+                <TbDeviceAnalytics className="icons text-[var(--text-color)]" />
+                <span className="sidebar-text text-[var(--text-color)] ">Analysis</span>
               </div>
             </Link>
             <Link to={"userlog"} className="">
               <div className="sidebar-div">
-                <FaClipboardList className="icons" />
-                <span className="sidebar-text ">User Logs</span>
+                <FaClipboardList className="icons text-[var(--text-color)]" />
+                <span className="sidebar-text text-[var(--text-color)] ">User Logs</span>
               </div>
             </Link>
           </div>
@@ -90,15 +92,15 @@ const Home = () => {
             className=" sidebar-div mb-1 cursor-pointer "
             onClick={handleLogout}
           >
-            <CiLogout className="icons" />
-            <span className="sidebar-text">Logout</span>
+            <CiLogout className="icons text-[var(--text-color)]" />
+            <span className="sidebar-text text-[var(--text-color)]">Logout</span>
           </div>
         </div>
         <div className="relative bg-black/10 flex-1 rounded-sm backdrop-blur-2xl mr-2 ">
-          <div className="relative rounded-sm bg-[#F5F5F5] shadow-lg h-full papper-effct flex flex-col  ">
+          <div className="relative rounded-sm shadow-lg h-full papper-effct flex flex-col  ">
             <div className="h-[56px] w-full border-b-1 border-gray-300 flex gap-1 sm:gap-2 md:gap-5 ">
               <div className="triangle"></div>
-              <span className=" text-gray-300 font-bold self-center">
+              <span className=" text-[var(--text-color)] font-bold self-center">
                 {activeSection}
               </span>
             </div>

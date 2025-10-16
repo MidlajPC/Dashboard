@@ -14,6 +14,7 @@ const Login = () => {
     password: ""
   });
   const [err, seterr] = useState({});
+  const [submitted, setsubmitted] = useState(false);
   const navigate = useNavigate();
   const validate = (value) => {
     const errs = {};
@@ -38,6 +39,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setsubmitted(true);
+      const ldng = toast.loading("Loading");
       const errors = validate(formvalue);
       if (Object.keys(errors).length === 0) {
         seterr({});
@@ -48,17 +51,31 @@ const Login = () => {
       await axios
         .post("/login", formvalue, { withCredentials: true })
         .then((res) => {
-          toast.success("welcome");
+          toast.update(ldng, {
+            render: "welcome",
+            type: "success",
+            isLoading: false,
+            autoClose: 1500
+          });
           console.log(res);
           localStorage.setItem("userId", res.data.user.id);
           setuserDetails(res.data.user);
           navigate("/");
         })
         .catch((error) => {
-          toast.error(error.response.data.message);
+          toast.update(ldng, {
+            render: error.response.data.message,
+            type: "error"
+          });
+          setsubmitted(false);
         });
     } catch (error) {
       console.log(error);
+      toast.update(ldng, {
+        render: error.message || error,
+        type: "error"
+      });
+      setsubmitted(false);
     }
   };
   return (
@@ -142,7 +159,14 @@ const Login = () => {
                     Forgot Password
                   </span>
                 </div>
-                <button className="login-btn" type="submit">
+                <button
+                  className={`login-btn ${
+                    submitted
+                      ? "disabled cursor-not-allowed !bg-[#0843e693]"
+                      : ""
+                  }`}
+                  type="submit"
+                >
                   Sign in
                 </button>
               </form>

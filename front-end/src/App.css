@@ -4,6 +4,14 @@
   padding: 2rem;
   text-align: center;
 }
+body.light {
+  background-color: F5F5F5;
+  color: black;
+}
+body.dark {
+  background-color: black;
+  color: FFFFFF;
+}
 
 .logo {
   height: 6em;
