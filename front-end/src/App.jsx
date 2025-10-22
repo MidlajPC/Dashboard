@@ -13,10 +13,7 @@ import Profile from "./components/Profile";
 import { useTheme } from "./context/ThemeContext";
 
 const App = () => {
-  const { theme } = useTheme();
-  useEffect(() => {
-    document.body.className = theme;
-  }, [theme]);
+
   return (
     <div>
       <ToastContainer />
