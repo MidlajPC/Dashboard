@@ -8,7 +8,8 @@ const botRoutes = require("./routes/getBots.routes");
 const userModel = require("./model/user.model");
 
 const app = express();
-app.use(cors({ origin: "https://dashboard-henna-nu-36.vercel.app", credentials: true }));
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+// app.use(cors({ origin: "https://dashboard-henna-nu-36.vercel.app", credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 

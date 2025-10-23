@@ -17,6 +17,8 @@ const Profile = () => {
     password: "",
     confirmPassword: ""
   });
+  const id = localStorage.getItem("userId");
+  console.log(id)
   const [passworderr, setpassworderr] = useState("");
   const [initialvalue, setinitialvalue] = useState(null);
   useEffect(() => {
@@ -70,8 +72,9 @@ const Profile = () => {
       phone: formvalue.phone,
       password: formvalue.password
     };
+
     axios
-      .put(`/updateProfile/${userDetails._id}`, updatedFormValue)
+      .put(`/updateProfile/${id}`, updatedFormValue)
       .then((res) => {
         console.log(res.data);
         toast.success("Profile updated successfully!");

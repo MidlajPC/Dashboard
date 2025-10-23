@@ -65,7 +65,9 @@ const Login = () => {
         .catch((error) => {
           toast.update(ldng, {
             render: error.response.data.message,
-            type: "error"
+            type: "error",
+            isLoading:false,
+            autoClose:1000
           });
           setsubmitted(false);
         });
@@ -73,7 +75,8 @@ const Login = () => {
       console.log(error);
       toast.update(ldng, {
         render: error.message || error,
-        type: "error"
+        type: "error",
+        isLoading:false
       });
       setsubmitted(false);
     }

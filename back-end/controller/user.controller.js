@@ -32,7 +32,7 @@ module.exports.login = async (req, res) => {
     );
     res.cookie("authToken", token, {
       httpOnly: true,
-      secure:true, // use after hosting and making the api https
+      secure: true, // use after hosting and making the api https
       sameSite: "none",
       maxAge: 12 * 60 * 60 * 1000
     });
@@ -79,7 +79,7 @@ module.exports.getme = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
     }
-    res.status(200).json({ user });
+    res.status(200).json({ user});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
