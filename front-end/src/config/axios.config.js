@@ -1,6 +1,6 @@
 import axios from "axios";
-const BASE_URL = "https://dashboard-back-end-ye52.onrender.com";
-
+const BASE_URL = "https://dashboard-back-en.vercel.app";
+// const BASE_URL = "https://dashboard-back-end-ye52.onrender.com";
 axios.defaults.baseURL = BASE_URL;
 // axios.interceptors.request.use(
 //   (config) => {
