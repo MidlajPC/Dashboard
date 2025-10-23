@@ -4,8 +4,8 @@ module.exports.logout = async (req, res) => {
   try {
     res.clearCookie("authToken", {
       httpOnly: true,
-      // secure:true,
-      sameSite: "strict"
+      secure: true,
+      sameSite: "none"
     });
     const id = req.currentUser.id;
     await userLogModel.updateOne(
