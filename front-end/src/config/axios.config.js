@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const BASE_URL = "https://dashboard-back-end-ye52.onrender.com";
 
 axios.defaults.baseURL = BASE_URL;
 // axios.interceptors.request.use(
