@@ -32,8 +32,8 @@ module.exports.login = async (req, res) => {
     );
     res.cookie("authToken", token, {
       httpOnly: true,
-      // secure:true, // use after hosting and making the api https
-      sameSite: "strict",
+      secure:true, // use after hosting and making the api https
+      sameSite: "none",
       maxAge: 12 * 60 * 60 * 1000
     });
     const userLog = await userLogModel.findOne({ user: user.id });
