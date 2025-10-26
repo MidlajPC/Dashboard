@@ -8,11 +8,6 @@ const botRoutes = require("./routes/getBots.routes");
 const userModel = require("./model/user.model");
 const bcrypt = require("bcrypt");
 
-const {
-  findByIdAndUpdate,
-  findOneAndUpdate
-} = require("../../../Node js/samplNodeapk/model/anime.model");
-
 const app = express();
 // app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(cors({ origin: "https://dashboard-henna-nu-36.vercel.app", credentials: true }));
