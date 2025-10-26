@@ -6,6 +6,12 @@ require("dotenv").config();
 const userRoutes = require("./routes/user.routes");
 const botRoutes = require("./routes/getBots.routes");
 const userModel = require("./model/user.model");
+const bcrypt = require("bcrypt");
+
+const {
+  findByIdAndUpdate,
+  findOneAndUpdate
+} = require("../../../Node js/samplNodeapk/model/anime.model");
 
 const app = express();
 // app.use(cors({ origin: "http://localhost:5173", credentials: true }));
@@ -15,6 +21,7 @@ app.use(cookieParser());
 
 app.use(userRoutes);
 app.use(botRoutes);
+
 
 dbconnect();
 app.listen(process.env.PORT, (err) => {

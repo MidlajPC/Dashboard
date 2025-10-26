@@ -89,9 +89,9 @@ const Login = () => {
       >
         {/* <div className="blur-div"></div> */}
         <div className="relative z-10 flex items-center justify-center w-full h-screen ">
-          <div className="bg-[#111419] w-[80%] h-[80%] rounded-xl flex ">
+          <div className="bg-[#111419] w-[80%] h-[80%] rounded-xl parent ">
             <div
-              className=" relative h-full w-[40%] sm:w-[45%] md:w-[50%] lg:w-[60%] rounded-l-xl bg-cover bg-center "
+              className=" relative h-full hide-mobile w-[40%] sm:w-[45%] md:w-[50%] lg:w-[60%] rounded-l-xl bg-cover bg-center "
               style={{ backgroundImage: `url(${loginbg})` }}
             >
               <div className="absolute h-full w-full bg-blue-600 rounded-l-xl opacity-70 "></div>
@@ -112,13 +112,13 @@ const Login = () => {
                 </a>
               </div>
             </div>
-            <div className=" w-[60%] sm:w-[55%] md:w-[50%] lg:w-[40%] flext-1 flex flex-col gap-5 justify-center items-center ">
-              <h3 className=" text-lg sm:text-xl md:text-2xl lg:text-4xl">
+            <div className=" child-b w-[60%] sm:w-[55%] md:w-[50%] lg:w-[40%] flext-1 text-white flex flex-col gap-5 justify-center items-center ">
+              <h3 className=" text-lg sm:text-xl md:text-2xl lg:text-4xl ">
                 Sign in
               </h3>
               <form
                 noValidate
-                className=" pr-5 sm:pr-7 md:pr-10 lg:pr-20 pl-5 sm:pl-7 md:pl-10 lg:pl-20 w-full"
+                className=" pr-5 sm:pr-7 md:pr-10 lg:pr-20 pl-5 sm:pl-7 md:pl-10 lg:pl-20 input-parent"
                 onSubmit={handleSubmit}
               >
                 <div className="mb-2">

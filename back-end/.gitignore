@@ -6,6 +6,8 @@ node_modules/
 .env.local
 .env.*.local
 
+pass.js
+
 # Logs
 logs
 *.log

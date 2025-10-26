@@ -79,7 +79,7 @@ module.exports.getme = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
     }
-    res.status(200).json({ user});
+    res.status(200).json({ user });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -229,9 +229,11 @@ module.exports.profileupdate = async (req, res) => {
       phone: data.phone,
       password: data.password
     };
-    if (update.password) {
+    if (data.password && data.password.trim() !== "") {
       const salt = await bcrypt.genSalt();
       update.password = await bcrypt.hash(update.password.toString(), salt);
+    } else {
+      delete update.password;
     }
     const existingUser = await userModel.findById(id);
     const changedFields = {};

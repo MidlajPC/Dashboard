@@ -13,6 +13,9 @@ import "../../css/dropdown.css";
 import { RiArrowDownWideLine } from "react-icons/ri";
 
 const Map = () => {
+  const [bots, setbots] = useState([]);
+  const [zoomTo, setzoomTo] = useState(null);
+  const [selectedPin, setselectedPin] = useState(null);
   const ZoomToMarker = ({ position, z }) => {
     const map = useMap();
     useEffect(() => {
@@ -21,7 +24,7 @@ const Map = () => {
       }
       map.flyTo(position, z, {
         animate: true,
-        duration: 2,
+        duration: 3,
         easeLinearity: 0.25
       });
     }, [position, map]);
@@ -34,13 +37,14 @@ const Map = () => {
     useEffect(() => {
       let center = chennaiCenter;
       if (city === "Kochi") center = kochiCenter;
-      map.flyTo(center, 12, { animate: true });
+      map.flyTo(center, 12, {
+        animate: true,
+        duration: 3,
+        easeLinearity: 0.25
+      });
     }, [city, map]);
     return null;
   };
-  const [bots, setbots] = useState([]);
-  const [zoomTo, setzoomTo] = useState(null);
-  const [selectedPin, setselectedPin] = useState(null);
   useEffect(() => {
     axios.get("/getbots").then((res) => {
       console.log(res);
@@ -106,6 +110,10 @@ const Map = () => {
     };
     handleFilteredBots();
   }, [bots, selectedCity, selectedOprtr]);
+  useEffect(() => {
+    setzoomTo(null);
+    setselectedPin(null);
+  }, [selectedCity, selectedOprtr]);
   console.log(selectedPin);
   return (
     <div className="m-2 flex flex-1 flex-col ">
@@ -197,19 +205,17 @@ const Map = () => {
             center={chennaiCenter}
             zoom={13}
             className="h-full w-full"
-            scrollWheelZoom={false}
+            scrollWheelZoom={true}
           >
             <LayersControl position="bottomleft">
               <LayersControl.BaseLayer checked name="OpenSreetMap">
                 <TileLayer
                   // attribution="&copy; openstreetmap contributors"
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  // url="https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z} "
                 />
               </LayersControl.BaseLayer>
               <LayersControl.BaseLayer name="sataliteMap">
                 <TileLayer
-                  // url="https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
                   url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                   maxZoom={20}
                   subdomains={["mt1", "mt2", "mt3"]}
