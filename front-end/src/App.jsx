@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Login from "./pages/Login";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -10,22 +10,34 @@ import UserLogs from "./components/admin/UserLogs";
 import UserManagement from "./components/admin/UserManagement";
 import Analysis from "./components/admin/Analysis";
 import Profile from "./components/Profile";
-import { useTheme } from "./context/ThemeContext";
+import { useUserDetails } from "./context/UserContext";
+import { useTheme } from "./context/ThemeProvider";
 
 const App = () => {
-
+  const { userDetails, setuserDetails } = useUserDetails();
+  const { isDark } = useTheme();
+  console.log(isDark);
+  const role = userDetails?.role;
   return (
-    <div>
+    <div data-theme={isDark ? "dark" : "light"}>
       <ToastContainer />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route element={<ProtectedRoutes />}>
           <Route path="/" element={<Home />}>
             <Route index element={<Overview />} />
-            <Route path="livemap" element={<Map />} />
-            <Route path="userlog" element={<UserLogs />} />
-            <Route path="analysis" element={<Analysis />} />
-            <Route path="usermanagement" element={<UserManagement />} />
+            {role === "admin" && (
+              <>
+                <Route path="livemap" element={<Map />} />
+                <Route path="usermanagement" element={<UserManagement />} />
+              </>
+            )}
+            {(role === "admin" || role === "analyst") && (
+              <>
+                <Route path="userlog" element={<UserLogs />} />
+                <Route path="analysis" element={<Analysis />} />
+              </>
+            )}
           </Route>
           <Route path="profile" element={<Profile />} />
         </Route>

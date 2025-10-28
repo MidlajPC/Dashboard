@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "../../config/axios.config";
 import "../../css/map.css";
+import { ImLocation } from "react-icons/im";
+import { divIcon } from "leaflet";
+import ReactDOMServer from "react-dom/server";
 import {
   LayersControl,
   MapContainer,
@@ -13,6 +16,15 @@ import "../../css/dropdown.css";
 import { RiArrowDownWideLine } from "react-icons/ri";
 
 const Map = () => {
+  const iconMarkup = ReactDOMServer.renderToString(
+    <ImLocation size={30} color="#7393b3  " />
+  );
+  const customIcon = divIcon({
+    html: iconMarkup,
+    className: "",
+    iconSize: [30, 30],
+    iconAnchor: [15, 30]
+  });
   const [bots, setbots] = useState([]);
   const [zoomTo, setzoomTo] = useState(null);
   const [selectedPin, setselectedPin] = useState(null);
@@ -95,6 +107,14 @@ const Map = () => {
   const [selectedCity, setselectedCity] = useState("All");
   const [selectedOprtr, setselectedOprtr] = useState("");
   const [filteredBots, setfilteredBots] = useState([]);
+  const [filtervalues, setfiltervalues] = useState({
+    selectedCity: "",
+    selectedOprtr
+  });
+  const handleApplyBtn = () => {
+    setselectedCity(filtervalues.selectedCity);
+    setselectedOprtr(filtervalues.selectedOprtr);
+  };
   useEffect(() => {
     const handleFilteredBots = () => {
       let filtered = bots;
@@ -146,7 +166,10 @@ const Map = () => {
                       key={idx}
                       className="dropdown-li"
                       onClick={() => {
-                        setselectedCity(city);
+                        setfiltervalues({
+                          ...filtervalues,
+                          selectedCity: city
+                        });
                         setisLctnDropDownOpen(!isLctnDrpDwnOpen);
                       }}
                     >
@@ -186,7 +209,10 @@ const Map = () => {
                       key={idx}
                       className="dropdown-li"
                       onClick={() => {
-                        setselectedOprtr(operator);
+                        setfiltervalues({
+                          ...filtervalues,
+                          selectedOprtr: operator
+                        });
                         setisOprtrDrpDwnOpen(!isOprtrDrpDwnOpen);
                       }}
                     >
@@ -198,6 +224,9 @@ const Map = () => {
             </div>
           )}
         </div>
+        <button onClick={handleApplyBtn} className="apply-btn">
+          Apply
+        </button>
       </div>
       <div className="w-full h-[calc(100vh-190px)] flex flex-col overflow-y-auto ">
         <div className={` w-full ${selectedPin ? "h-3/4" : "flex-1"} `}>
@@ -224,6 +253,7 @@ const Map = () => {
             </LayersControl>
             {filteredBots.map((bot, idx) => (
               <Marker
+                icon={customIcon}
                 key={idx}
                 position={[bot.Position.lat[0], bot.Position.lng[0]]}
                 eventHandlers={{

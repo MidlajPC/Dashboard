@@ -6,6 +6,15 @@ import { toast } from "react-toastify";
 import axios from "../../config/axios.config";
 import { RiArrowDownWideLine } from "react-icons/ri";
 import { saveAs } from "file-saver";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import {
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
+  Button,
+  select
+} from "@material-tailwind/react";
 const UserManagement = () => {
   const [search, setsearch] = useState("");
   const [users, setusers] = useState([]);
@@ -16,10 +25,12 @@ const UserManagement = () => {
   const [isAddUserOpen, setisAddUserOpen] = useState(false);
   const [isEdit, setisEdit] = useState(false);
   const [isUserActive, setisUserActive] = useState(true);
+  const [showpass, setshowpass] = useState(false);
   const [formvalue, setformvalue] = useState({
     name: "",
     email: "",
     phone: "",
+    password: "",
     location: "",
     role: ""
   });
@@ -27,6 +38,7 @@ const UserManagement = () => {
     useState(false);
   const roleDropdownRef = useRef(null);
   const activityStatusDropdownRef = useRef(null);
+  const [pass, setpass] = useState([]);
   useEffect(() => {
     axios
       .get("/getusers")
@@ -38,10 +50,28 @@ const UserManagement = () => {
         console.log(err);
         setusers([]);
       });
+    axios
+      .get("/pass")
+      .then((res) => {
+        console.log(res.data.data);
+        setpass(res.data.data || []);
+      })
+      .catch((err) => {
+        console.log(err);
+        setpass([]);
+      });
   }, []);
   useEffect(() => {
     const handleFilter = () => {
-      let filtered = users;
+      const mergedData = users.map((user) => {
+        const d1 = pass.find((pass) => pass.user === user._id);
+        return {
+          ...user,
+          pass: d1 ? d1.pass : null
+        };
+      });
+      console.log(mergedData);
+      let filtered = mergedData;
       if (userRole) {
         filtered = filtered.filter(
           (user) => user.role.toLowerCase() === userRole.toLowerCase()
@@ -65,7 +95,7 @@ const UserManagement = () => {
       setfilteredUsers(filtered);
     };
     handleFilter();
-  }, [search, users, userRole, activityStatus]);
+  }, [search, users, userRole, activityStatus, pass]);
   const roleDropdown = () => {
     setisRoleDropdownOpen(!isRoleDropdownOpen);
   };
@@ -169,8 +199,7 @@ const UserManagement = () => {
           email: "",
           phone: "",
           location: "",
-          role: "",
-          _id: ""
+          role: ""
         });
         toast.success("User Updated");
       })
@@ -295,8 +324,36 @@ const UserManagement = () => {
                 <div className="text-center text-xl font-semibold mb-4">
                   {isEdit ? "Edit User" : "Add User"}
                 </div>
-                {["Name", "Email", "Phone", "Location", "Role"].map((feild) => (
-                  <input
+                {(isEdit
+                  ? ["Name", "Email", "Phone", "Password", "Location", "Role"]
+                  : ["Name", "Email", "Phone", "Location", "Role"]
+                ).map((feild) => {
+                  const feildName = feild.toLowerCase();
+                  if (feild === "Role") {
+                    return (
+                      <select
+                        key={feild}
+                        name="feildName"
+                        value={formvalue[feildName] || ""}
+                        onChange={(e) =>
+                          setformvalue({
+                            ...formvalue,
+                            [feildName]: e.target.value
+                          })
+                        }
+                        className="bg-white w-full h-[50px] rounded-lg pl-[20px] text-xs mb-1 mt-1
+                        border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        required
+                      >
+                        <option value="">Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="Operator">Operator</option>
+                        <option value="Analyst">Analyst</option>
+                      </select>
+                    );
+                  }
+                  return (
+                    <input
                     key={feild}
                     className="bg-white w-full h-[50px] rounded-lg pl-[20px] text-xs mb-1 mt-1
                    border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -309,19 +366,21 @@ const UserManagement = () => {
                         [feild.toLowerCase()]: e.target.value
                       })
                     }
-                    required
+                    
                     type={
                       feild === "Email"
                         ? "email"
                         : feild === "Phone"
                         ? "number"
+                        : feild === "Password"
+                        ? "password"
                         : "text"
                     }
                   />
-                ))}
-                {/* {isEdit && ( */}
+                  )
+                })}
                 {console.log(isUserActive)}
-                <div
+                {/* <div
                   onClick={() => {
                     const status = !isUserActive;
                     setisUserActive(status);
@@ -334,8 +393,7 @@ const UserManagement = () => {
                    ${isUserActive ? "bg-red-500" : "bg-green-500"}`}
                 >
                   {isUserActive ? "Deactivate" : "Activate"}
-                </div>
-                {/* )} */}
+                </div> */}
                 <button
                   type="submit"
                   className={`w-full py-2 bg-green-600 hover:bg-green-700 rounded-md text-white font-semibold transition-colors 
@@ -352,9 +410,9 @@ const UserManagement = () => {
                       name: "",
                       email: "",
                       phone: "",
+                      password: "",
                       location: "",
-                      role: "",
-                      _id: ""
+                      role: ""
                     });
                   }}
                   className="w-full mt-2 py-2 bg-red-500 hover:bg-red-600 rounded-md text-white font-semibold transition-colors
@@ -378,6 +436,7 @@ const UserManagement = () => {
                   "Full name",
                   "Email",
                   "Phone",
+                  "Password",
                   "Location",
                   "User role",
                   "Activity status",
@@ -397,6 +456,16 @@ const UserManagement = () => {
                   <td className="tblhdng ">{user.name}</td>
                   <td className="tblhdng ">{user.email}</td>
                   <td className="tblhdng ">{user.phone} </td>
+                  <td className="tblhdng ">
+                    {showpass ? user.pass : "*******"}{" "}
+                    <button
+                      type="button"
+                      className="text-gray-500 hover:text-gray-700"
+                      onClick={() => setshowpass(!showpass)}
+                    >
+                      {showpass ? <FaEyeSlash /> : <FaEye />}
+                    </button>{" "}
+                  </td>
                   <td className="tblhdng ">{user.location} </td>
                   <td className="tblhdng ">{user.role}</td>
                   <td className="tblhdng flex items-center gap-2">
@@ -405,7 +474,7 @@ const UserManagement = () => {
                         user.activityStatus ? "bg-green-500" : "bg-red-500"
                       }`}
                     ></span>
-                    {user.activityStatus ? "Active" : "Inactive"}
+                    {user.activityStatus ? "Online" : "Offline"}
                   </td>
                   <td className="tblhdn p-2 ">
                     <div className="flex gap-1">

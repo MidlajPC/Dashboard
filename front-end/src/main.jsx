@@ -5,14 +5,14 @@ import "leaflet/dist/leaflet.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { UserProvider } from "./context/UserContext.jsx";
-import { ThemeProvider } from "./context/ThemeContext.jsx";
+import ThemeProvider from "./context/ThemeProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <ThemeProvider>
-      <UserProvider>
+    <UserProvider>
+      <ThemeProvider>
         <App />
-      </UserProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </UserProvider>
   </BrowserRouter>
 );

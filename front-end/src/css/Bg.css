@@ -19,7 +19,7 @@
   left: 0;
   width: 40px;
   height: 40px;
-  background: #ffffff;
+  background: #e1dcdc;
   clip-path: polygon(100% 100%, 100% 0, 0 100%);
   box-shadow: 5px 5px 15px rgb(0, 0, 0, 0.3);
 }
@@ -48,7 +48,7 @@ a:hover {
 .input-parent {
   width: 100%;
 }
-input::placeholder {
+.input-parent input::placeholder {
   color: white;
 }
 .hide-mobile {
