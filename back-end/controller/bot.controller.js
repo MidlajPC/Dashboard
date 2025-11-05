@@ -3,7 +3,6 @@ module.exports.getbots = async (req, res) => {
   try {
     const bots = await botModel
       .find()
-      .populate({ path: "currentuser", select: "name email" })
       .populate({ path: "data.operator", select: "name email" })
       .populate({path:"operators.user",select:"-password"})
     if (bots) {

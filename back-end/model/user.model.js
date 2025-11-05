@@ -24,8 +24,7 @@ const userSchema = mongoose.Schema(
     },
     activityStatus: {
       type: Boolean,
-      default: true,
-      required: true
+      default: false
     },
     loginStatus: {
       type: Boolean,
@@ -43,9 +42,9 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 );
 userSchema.pre("save", async function (next) {
-  console.log("pre-save middleware triggered")
+  console.log("pre-save middleware triggered");
   if (!this.isModified("password")) {
-    console.log("no changes ditected")
+    console.log("no changes ditected");
     return next();
   }
   try {

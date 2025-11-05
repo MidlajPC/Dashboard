@@ -1,4 +1,5 @@
 const userLogModel = require("../model/userLogModel");
+const userModel = require("../model/user.model");
 
 module.exports.logout = async (req, res) => {
   try {
@@ -8,6 +9,7 @@ module.exports.logout = async (req, res) => {
       sameSite: "none"
     });
     const id = req.currentUser.id;
+    await userModel.updateOne({ _id: id }, { activityStatus: false });
     await userLogModel.updateOne(
       { user: id },
       {

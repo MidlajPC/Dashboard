@@ -13,6 +13,7 @@ router.post("/adduser", authenticate, userController.adduser);
 router.put("/edituser/:id", authenticate, userController.edituser);
 router.put("/updateProfile/:id", authenticate, userController.profileupdate);
 router.delete("/deleteuser/:id", authenticate, userController.deleteUser);
-router.post("/authenticate/me",authenticate,userController.auth)
+router.post("/authenticate/me", authenticate, userController.auth);
+router.get("/pass", authenticate, userController.getpass);
 
 module.exports = router;

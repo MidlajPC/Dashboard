@@ -97,11 +97,11 @@ const Map = () => {
   }, []);
   const uniqueCities = [
     "All",
-    ...new Set(bots.map((bot) => bot.Position.city))
+    ...new Set(bots.map((bot) => bot.data[0].position.city))
   ];
   const uniqueOprtr = [
     "All",
-    ...new Set(bots.map((bot) => bot.currentOperator.name))
+    ...new Set(bots.map((bot) => bot.data[0].operator.name))
   ];
   console.log(uniqueCities, uniqueOprtr);
   const [selectedCity, setselectedCity] = useState("All");
@@ -119,11 +119,11 @@ const Map = () => {
     const handleFilteredBots = () => {
       let filtered = bots;
       if (selectedCity && selectedCity !== "All") {
-        filtered = filtered.filter((bot) => bot.Position.city === selectedCity);
+        filtered = filtered.filter((bot) => bot.data[0].position.city === selectedCity);
       }
       if (selectedOprtr && selectedOprtr !== "All") {
         filtered = filtered.filter(
-          (bot) => bot.currentOperator.name === selectedOprtr
+          (bot) => bot.data[0].operator.name === selectedOprtr
         );
       }
       setfilteredBots(filtered);
@@ -183,7 +183,7 @@ const Map = () => {
         </div>
         {/* operator dropdown */}
         <div className="relative w-[130px]" ref={operatorRef}>
-          <div className="dropdown" onClick={toggleOprtrDrpDwn}>
+          <div className="dropdown overflow-x-hidden" onClick={toggleOprtrDrpDwn}>
             <p>
               {selectedOprtr.length > 0
                 ? selectedOprtr === "All"
@@ -255,10 +255,10 @@ const Map = () => {
               <Marker
                 icon={customIcon}
                 key={idx}
-                position={[bot.Position.lat[0], bot.Position.lng[0]]}
+                position={[bot.data[0].position.lat, bot.data[0].position.lng]}
                 eventHandlers={{
                   click: () => {
-                    setzoomTo([bot.Position.lat[0], bot.Position.lng[0]]);
+                    setzoomTo([bot.data[0].position.lat, bot.data[0].position.lng]);
                     setselectedPin(bot);
                   },
                   popupclose: () => {
@@ -276,20 +276,21 @@ const Map = () => {
         </div>
         {selectedPin && (
           <div className="grid grid-cols-4 gap-1 overflow-y-auto pb-2">
+            {console.log(selectedPin)}
             <div className="d-card bg-amber-300 col-span-4 pl-[10px] pt-[2px] h-[30px]">
               Id: {selectedPin.UniqueCode}
             </div>
             <div className="d-card bg-amber-200 pl-[10px] pt-[10px] h-[50px]">
-              Uptime: {selectedPin.Robotuptime}
+              Uptime: {selectedPin.data[0].Robotuptime}
             </div>
             <div className="d-card bg-amber-200 pl-[10px] pt-[10px] h-[50px]">
-              Battery: {selectedPin.Battery}
+              Battery: {selectedPin.data[0].Battery}%
             </div>
             <div className="d-card bg-amber-200 pl-[10px] pt-[10px] h-[50px]">
-              Didtance Covered: {selectedPin.DistanceCovered}
+              Didtance Covered: {selectedPin.data[0].DistanceCovered} KM
             </div>
             <div className="d-card bg-amber-200 pl-[10px] pt-[10px] h-[50px]">
-              Wastetraystatus: {selectedPin.Wastetraystatus}
+              Wastetraystatus: {selectedPin.data[0].Wastetraystatus}
             </div>
             <div className="col-span-4 flex gap-1">
               <div className=" bg-white rounded-sm overflow-hidden flex-1">

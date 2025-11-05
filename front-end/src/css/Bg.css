@@ -1,7 +1,7 @@
 .blur-div {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--primary-bg-color);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 0;
@@ -19,7 +19,7 @@
   left: 0;
   width: 40px;
   height: 40px;
-  background: #e1dcdc;
+  background: var(--triangle-bg);
   clip-path: polygon(100% 100%, 100% 0, 0 100%);
   box-shadow: 5px 5px 15px rgb(0, 0, 0, 0.3);
 }

@@ -21,10 +21,7 @@ const Header = () => {
     setisDark(checked);
   };
   return (
-    <header className="relative h-[30px] md:h-[55px] px-1 sm:px-3 flex items-center justify-between bg-[#262626 ">
-      <div className="flex items-center title-div">
-        <p>SCOUT V12</p>
-      </div>
+    <header className="relative  h-[30px] md:h-[55px] px-1 sm:px-3 flex items-center justify-end ">
       <div className="text-white text-3xl flex gap-2 mr-3">
         <div>
           <label htmlFor="toggle" className="switch">

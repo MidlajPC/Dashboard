@@ -42,6 +42,15 @@ const dataschema = mongoose.Schema({
   Wastetraystatus: {
     type: String
   },
+  humidity: {
+    type: String
+  },
+  temperature: {
+    type: Number
+  },
+  tide: {
+    type: String
+  },
   Robotuptime: {
     type: Number
   },
@@ -56,10 +65,6 @@ const botSchema = mongoose.Schema({
     type: Number,
     required: true,
     unique: true
-  },
-  currentuser: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user"
   },
   data: [dataschema],
   operators: [botuserSchema]

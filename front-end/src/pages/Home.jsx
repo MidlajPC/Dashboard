@@ -16,6 +16,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useUserDetails } from "../context/UserContext";
+import { SiHelpscout } from "react-icons/si";
 const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,82 +54,85 @@ const Home = () => {
   };
   return (
     <div
-      className="min-h-screen min-w-screen flex flex-col "
+      className="min-h-screen flex home-bg  "
       // style={{ backgroundImage: `url(${bg})` }}
     >
-      <Header />
-      <div className="flex flex-1 pb-2 ">
-        <div className="home-main-div w-[50px] sm:w-[150px] md:w-[180px] lg:w-[230px] mx-2 rounded-sm backdrop-blur-2xl flex flex-col justify-between  ">
-          <div className="flex flex-col gap-5">
-            <Link to={"/"} className="">
-              <div className="sidebar-div mt-5">
-                <MdDashboard className="icons text-[var(--text-color)]" />
-                <span className="sidebar-text text-[var(--text-color)] ">
-                  Overview
+      <div className=" sidebar w-[20px] sm:w-[30px] md:w-[40px] lg:w-[60px] z-50 backdrop-blur-2xl flex flex-col justify-between  ">
+        <div className="flex flex-col gap-2">
+          <div className="flex sidebar-div items-center title-div">
+            <SiHelpscout className="icons" />
+            <p className="sidebar-text !text-xl ">SCOUT V12</p>
+          </div>
+          <Link to={"/"} className="">
+            <div className="sidebar-div mt-5">
+              <MdDashboard className="icons" />
+              <span className="sidebar-text ">Overview</span>
+            </div>
+          </Link>
+          {role === "admin" && (
+            <>
+              <Link to={"livemap"} className="">
+                <div className="sidebar-div">
+                  <FaMapMarkedAlt className="icons text-[var(--text-color)]" />
+                  <span className="sidebar-text text-[var(--text-color)] ">
+                    Live Map
+                  </span>
+                </div>
+              </Link>
+              <Link to={"usermanagement"} className="">
+                <div className="sidebar-div">
+                  <FaUsersCog className="icons text-[var(--text-color)]" />
+                  <span className="sidebar-text overflow-hidden text-[var(--text-color)] ">
+                    User Management
+                  </span>
+                </div>
+              </Link>
+            </>
+          )}
+          {(role === "admin" || role === "analyst") && (
+            <>
+              <Link to={"analysis"} className="">
+                <div className="sidebar-div">
+                  <TbDeviceAnalytics className="icons text-[var(--text-color)]" />
+                  <span className="sidebar-text text-[var(--text-color)] ">
+                    Analysis
+                  </span>
+                </div>
+              </Link>
+              <Link to={"userlog"} className="">
+                <div className="sidebar-div">
+                  <FaClipboardList className="icons text-[var(--text-color)]" />
+                  <span className="sidebar-text text-[var(--text-color)] ">
+                    User Logs
+                  </span>
+                </div>
+              </Link>
+            </>
+          )}
+        </div>
+        <div
+          className=" sidebar-div mb-1 cursor-pointer "
+          onClick={handleLogout}
+        >
+          <CiLogout className="icons text-[var(--text-color)]" />
+          <span className="sidebar-text text-[var(--text-color)]">Logout</span>
+        </div>
+      </div>
+      {/* <div className="grid gri"></div */}
+      <div className="z-50 shadow-2xl flex-1 ">
+        <Header />
+        <div className="flex flex-1 pb-1 ">
+          <div className="relative home-main-div flex-1  backdrop-blur-2xl ">
+            <div className="relative rounded-sm shadow-lg h-full papper-effct flex flex-col ">
+              <div className="h-[52px] w-full border-b-1 border-gray-300 flex  gap-1 sm:gap-2 md:gap-5">
+                <div className="triangle"></div>
+                <span className=" text-[var(--text-color)] font-bold self-center">
+                  {activeSection}
                 </span>
               </div>
-            </Link>
-            {role === "admin" && (
-              <>
-                <Link to={"livemap"} className="">
-                  <div className="sidebar-div">
-                    <FaMapMarkedAlt className="icons text-[var(--text-color)]" />
-                    <span className="sidebar-text text-[var(--text-color)] ">
-                      Live Map
-                    </span>
-                  </div>
-                </Link>
-                <Link to={"usermanagement"} className="">
-                  <div className="sidebar-div">
-                    <FaUsersCog className="icons text-[var(--text-color)]" />
-                    <span className="sidebar-text text-[var(--text-color)] ">
-                      User Management
-                    </span>
-                  </div>
-                </Link>
-              </>
-            )}
-            {(role === "admin" || role === "analyst") && (
-              <>
-                <Link to={"analysis"} className="">
-                  <div className="sidebar-div">
-                    <TbDeviceAnalytics className="icons text-[var(--text-color)]" />
-                    <span className="sidebar-text text-[var(--text-color)] ">
-                      Analysis
-                    </span>
-                  </div>
-                </Link>
-                <Link to={"userlog"} className="">
-                  <div className="sidebar-div">
-                    <FaClipboardList className="icons text-[var(--text-color)]" />
-                    <span className="sidebar-text text-[var(--text-color)] ">
-                      User Logs
-                    </span>
-                  </div>
-                </Link>
-              </>
-            )}
-          </div>
-          <div
-            className=" sidebar-div mb-1 cursor-pointer "
-            onClick={handleLogout}
-          >
-            <CiLogout className="icons text-[var(--text-color)]" />
-            <span className="sidebar-text text-[var(--text-color)]">
-              Logout
-            </span>
-          </div>
-        </div>
-        <div className="relative home-main-div flex-1 rounded-sm backdrop-blur-2xl mr-2 ">
-          <div className="relative rounded-sm shadow-lg h-full papper-effct flex flex-col  ">
-            <div className="h-[56px] w-full border-b-1 border-gray-300 flex gap-1 sm:gap-2 md:gap-5 ">
-              <div className="triangle"></div>
-              <span className=" text-[var(--text-color)] font-bold self-center">
-                {activeSection}
-              </span>
-            </div>
-            <div className="flex-1 rounded-b-sm overflow-hidden">
-              <Outlet />
+              <div className="flex-1 w-full max-w-full rounded-b-sm overflow-hidden">
+                <Outlet />
+              </div>
             </div>
           </div>
         </div>

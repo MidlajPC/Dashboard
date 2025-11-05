@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/Bg.css";
+import "../css/login.css";
 import loginbg from "../assets/bg/login.jpg";
 import logo from "../assets/logo/drubelabs.png";
 import { toast } from "react-toastify";

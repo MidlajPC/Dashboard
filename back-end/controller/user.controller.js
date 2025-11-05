@@ -2,20 +2,16 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const userModel = require("../model/user.model");
 const userLogModel = require("../model/userLogModel");
+const passmodel = require("../model/pass.model");
 const crypto = require("crypto");
 
 module.exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     const user = await userModel.findOne({ email: email });
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
-    }
-    if (user.activityStatus === false) {
-      res.status(403).json({
-        message: "Your Account is Deactiveted! contact Admin form more details!"
-      });
     }
     const auth = await bcrypt.compare(password, user.password);
     if (!auth) {
@@ -53,6 +49,7 @@ module.exports.login = async (req, res) => {
         ]
       });
     }
+    await userModel.updateOne({ email: email }, { activityStatus: true });
     res.status(200).json({
       message: "success",
       user: {
@@ -86,9 +83,9 @@ module.exports.getme = async (req, res) => {
 };
 module.exports.getUsers = async (req, res) => {
   try {
-    console.log("object");
+    // console.log("object");
     const users = await userModel.find().select("-password");
-    console.log(users);
+    // console.log(users);
     if (users.length === 0) {
       res.status(401).json({ message: "couldn't find any users" });
     } else {
@@ -101,15 +98,17 @@ module.exports.getUsers = async (req, res) => {
 module.exports.adduser = async (req, res) => {
   try {
     const nuser = req.body;
-    console.log(nuser);
+    console.log("nuser");
     const existingUser = await userModel.findOne({ email: nuser.email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists!" });
     }
     const plainPassword = crypto.randomBytes(5).toString("hex");
     nuser.password = plainPassword;
+    console.log(nuser);
     const newUser = await userModel.create(nuser);
-    console.log(newUser);
+    console.log("newUser");
+    await passmodel.create({ user: newUser._id, pass: plainPassword });
     const allUsers = await userModel.find().select("-password");
     const { password, ...userWithoutPass } = newUser.toObject();
     const userlog = await userLogModel.findOne({ user: req.currentUser.id });
@@ -161,6 +160,7 @@ module.exports.edituser = async (req, res) => {
       name: data.name,
       email: data.email,
       phone: data.phone,
+      password: data.password,
       location: data.location,
       role: data.role,
       activityStatus: data.activityStatus
@@ -222,7 +222,7 @@ module.exports.profileupdate = async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
-    console.log(id, data);
+    // console.log(id, data);
     const update = {
       name: data.name,
       email: data.email,
@@ -230,12 +230,15 @@ module.exports.profileupdate = async (req, res) => {
       password: data.password
     };
     if (data.password && data.password.trim() !== "") {
+      const plainPassword = update.password;
       const salt = await bcrypt.genSalt();
       update.password = await bcrypt.hash(update.password.toString(), salt);
     } else {
       delete update.password;
     }
     const existingUser = await userModel.findById(id);
+    const existingUserPass = await passmodel.findOne({ user: id });
+    await passmodel.updateOne({ user: id }, { pass: plainPassword });
     const changedFields = {};
     for (i in update) {
       if (update[i] !== existingUser[i]) {
@@ -331,6 +334,22 @@ module.exports.deleteUser = async (req, res) => {
       .status(200)
       .json({ message: "User deleted successfully!", users: allUsers });
   } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+module.exports.getpass = async (req, res) => {
+  try {
+    const id = req.currentUser.id;
+    const user = await userModel.findById(id);
+    if (user.role !== "admin") {
+      res.status(401).json({ message: "UnAuthorised" });
+    } else {
+      const pass = await passmodel.find().populate().select("-password");
+      console.log(pass);
+      res.status(200).json({ message: "success", data: pass });
+    }
+  } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };

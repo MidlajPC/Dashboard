@@ -352,6 +352,28 @@ const UserManagement = () => {
                       </select>
                     );
                   }
+                  else if (feild === "Location") {
+                    return (
+                      <select
+                        key={feild}
+                        name="feildName"
+                        value={formvalue[feildName] || ""}
+                        onChange={(e) =>
+                          setformvalue({
+                            ...formvalue,
+                            [feildName]: e.target.value
+                          })
+                        }
+                        className="bg-white w-full h-[50px] rounded-lg pl-[20px] text-xs mb-1 mt-1
+                        border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        required
+                      >
+                        <option value="">Location</option>
+                        <option value="Kochi">Kochi</option>
+                        <option value="Chennai">Chennai</option>
+                      </select>
+                    );
+                  }
                   return (
                     <input
                     key={feild}
@@ -396,7 +418,7 @@ const UserManagement = () => {
                 </div> */}
                 <button
                   type="submit"
-                  className={`w-full py-2 bg-green-600 hover:bg-green-700 rounded-md text-white font-semibold transition-colors 
+                  className={`w-full py-2 add-user-btn rounded-md text-white font-semibold transition-colors 
                     duration-200 ${isEdit ? "" : "mt-2"}`}
                 >
                   {isEdit ? "Update" : "Add"}

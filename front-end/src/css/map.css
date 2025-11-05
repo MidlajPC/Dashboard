@@ -28,8 +28,8 @@
 .apply-btn {
   border-radius: 4px;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  background-color: #23e719;
-  color: #060606;
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
   font-size: medium;
   padding-left: 10px;
   padding-right: 10px;
