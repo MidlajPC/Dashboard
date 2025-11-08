@@ -114,7 +114,7 @@ const Login = () => {
                 href="https://drubelabs.com/"
                 className=" no-underline hover:text-red-500 text-md sm:text-2xl md:text-3xl lg:text-5xl w-fit"
               >
-                <p className="text-black text-2xl m-5 font-[700] font-[Poppins] ">SCOUT E750</p>
+                <p className="text-black text-2xl font-bold m5 ">SCOUT V750</p>
               </a>
               {/* <div className="relative h-full flex flex-col gap-1  pl-2 md:pl-5">
                 <p className="text-md sm:text-xl md:text-5xl lg:text-5xl mt-20 z-50 ">
@@ -123,7 +123,7 @@ const Login = () => {
               </div> */}
             </div>
             <div className=" child-b w-[60%] sm:w-[55%] md:w-[50%] lg:w-[40%] flext-1 text-white flex flex-col gap-5 justify-center items-center ">
-              <h3 className=" text-lg sm:text-xl md:text-2xl lg:text-4xl font-[700] font-[Poppins] ">
+              <h3 className=" text-lg sm:text-xl md:text-2xl lg:text-4xl ">
                 Sign In
               </h3>
               <form

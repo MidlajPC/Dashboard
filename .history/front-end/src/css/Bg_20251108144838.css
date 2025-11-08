@@ -74,7 +74,7 @@ a:hover {
 }
 .login-btn {
   background-color: var(--lgn-button-bg-color);
-  color: var(--primary-text-color);
+  color: ;
   width: 100%;
   height: 50px;
   border-radius: 8px;

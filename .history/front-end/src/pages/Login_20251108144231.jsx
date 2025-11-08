@@ -90,18 +90,6 @@ const Login = () => {
         className=" min-h-screen w-screen relative bg-cover bg-center bg-[#212429] "
         // style={{ backgroundImage: `url(${loginbg})` }}
       >
-        <div className="bg-amber-50">
-          <a
-            href="https://drubelabs.com/"
-            className=" no-underline hover:text-red-500 text-md sm:text-2xl md:text-3xl lg:text-5xl w-fit"
-          >
-            <img
-              src={logo}
-              alt="D-RubeLabs"
-              className="absolute h-[20px] md:h-[40px] m-1 md:m-5 invert-100 "
-            />
-          </a>
-        </div>
         {/* <div className="blur-div"></div> */}
         <div className="relative z-10 flex items-center justify-center w-full h-screen ">
           <div className="bg-[#111419] w-[80%] h-[80%] rounded-xl parent ">
@@ -114,16 +102,20 @@ const Login = () => {
                 href="https://drubelabs.com/"
                 className=" no-underline hover:text-red-500 text-md sm:text-2xl md:text-3xl lg:text-5xl w-fit"
               >
-                <p className="text-black text-2xl m-5 font-[700] font-[Poppins] ">SCOUT E750</p>
+                <img
+                  src={logo}
+                  alt="D-RubeLabs"
+                  className="absolute h-[20px] md:h-[50px] m-1 md:m-5 "
+                />
               </a>
-              {/* <div className="relative h-full flex flex-col gap-1  pl-2 md:pl-5">
-                <p className="text-md sm:text-xl md:text-5xl lg:text-5xl mt-20 z-50 ">
+              <div className="relative h-full flex flex-col gap-1 justify-center pl-2 md:pl-5">
+                <p className="text-md sm:text-xl md:text-5xl lg:text- mt-40 z-50 ">
                   WELCOME BACK !
                 </p>
-              </div> */}
+              </div>
             </div>
             <div className=" child-b w-[60%] sm:w-[55%] md:w-[50%] lg:w-[40%] flext-1 text-white flex flex-col gap-5 justify-center items-center ">
-              <h3 className=" text-lg sm:text-xl md:text-2xl lg:text-4xl font-[700] font-[Poppins] ">
+              <h3 className=" text-lg sm:text-xl md:text-2xl lg:text-4xl ">
                 Sign In
               </h3>
               <form
@@ -167,7 +159,7 @@ const Login = () => {
                     <p className="text-red-500 text-sm mt-1">{err.password}</p>
                   )}
                 </div>
-                <div className="flex justify-end mb-2 text-[#f5f5f5] cursor-pointer text-sm hover:underline">
+                <div className="flex justify-end mb-2 text-blue-500 cursor-pointer text-sm hover:underline">
                   <span className="relative right-0 text-[10px] sm:text-xs md:text-sm lg:text-base">
                     Forgot Password
                   </span>

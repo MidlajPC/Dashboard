@@ -123,7 +123,7 @@ const Login = () => {
               </div> */}
             </div>
             <div className=" child-b w-[60%] sm:w-[55%] md:w-[50%] lg:w-[40%] flext-1 text-white flex flex-col gap-5 justify-center items-center ">
-              <h3 className=" text-lg sm:text-xl md:text-2xl lg:text-4xl font-[700] font-[Poppins] ">
+              <h3 className=" text-lg sm:text-xl md:text-2xl lg:text-4xl ">
                 Sign In
               </h3>
               <form
