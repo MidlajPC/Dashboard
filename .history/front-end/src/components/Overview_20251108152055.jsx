@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/overview.css";
-import Areachart from "./Areachart";
+import Areachart from "./";
 import Barchart from "./Barchart";
 import Linechart from "./Linechart";
 
