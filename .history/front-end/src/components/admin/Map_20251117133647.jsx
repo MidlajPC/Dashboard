@@ -303,10 +303,10 @@ const Map = () => {
               Uptime: {selectedPin.data[0].Robotuptime}
             </div>
             <div className="d-card bg-amber-200 pl-[10px] pt-[10px] h-[50px]">
-              Battery: {Math.floor(selectedPin.data[0].Battery)}%
+              Battery: {Math.fl(selectedPin.data[0].Battery)}%
             </div>
             <div className="d-card bg-amber-200 pl-[10px] pt-[10px] h-[50px]">
-              Didtance Covered: {Math.round(selectedPin.data[0].DistanceCovered)} KM
+              Didtance Covered: {selectedPin.data[0].DistanceCovered} KM
             </div>
             <div className="d-card bg-amber-200 pl-[10px] pt-[10px] h-[50px]">
               Wastetraystatus: {selectedPin.data[0].Wastetraystatus}
