@@ -103,8 +103,9 @@ const Map = () => {
   // }, []);
   const uniqueCities = [
     "All",
-    ...new Set(bots?.map((bot) => bot.data[0].position.city))
+    ...new Set(bots.map((bot) => bot.data[0].position.city))
   ];
+  
   // const uniqueOprtr = [
   //   "All",
   //   ...new Set(bots.map((bot) => bot.data[0].operator.name))
@@ -267,8 +268,9 @@ const Map = () => {
                 />
               </LayersControl.BaseLayer>
             </LayersControl>
-            {filteredBots?.map((bot, idx) => (
-              <Marker
+            {filteredBots.map((bot, idx) => 
+            {
+              return (<Marker
                 icon={customIcon}
                 key={idx}
                 position={[bot.data[0].position.lat, bot.data[0].position.lng]}
@@ -287,8 +289,9 @@ const Map = () => {
                 }}
               >
                 <Popup>{bot.name}</Popup>
-              </Marker>
-            ))}
+              </Marker>)
+            }
+            )}
             <FlyToCity city={selectedCity} />
             {zoomTo && <ZoomToMarker position={zoomTo} z={16} />}
           </MapContainer>

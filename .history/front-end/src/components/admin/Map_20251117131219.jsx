@@ -267,7 +267,7 @@ const Map = () => {
                 />
               </LayersControl.BaseLayer>
             </LayersControl>
-            {filteredBots?.map((bot, idx) => (
+            {filteredBots.map((bot, idx) => (
               <Marker
                 icon={customIcon}
                 key={idx}
