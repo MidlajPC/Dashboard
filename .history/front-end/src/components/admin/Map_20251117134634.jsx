@@ -53,8 +53,8 @@ const Map = () => {
         return;
       }
       let center = chennaiCenter;
-      if (city === "kochi") center = kochiCenter;
-      map.flyTo(center, 11, {
+      if (city === "Kochi") center = kochiCenter;
+      map.flyTo(center, 12, {
         animate: true,
         duration: 3,
         easeLinearity: 0.25

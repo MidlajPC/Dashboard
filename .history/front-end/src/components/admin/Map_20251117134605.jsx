@@ -46,22 +46,25 @@ const Map = () => {
   };
   const chennaiCenter = [13.0827, 80.2707];
   const kochiCenter = [9.9312, 76.2673];
-  const FlyToCity = React.memo(({ city }) => {
+  const FlyToCity = 
+  // React.memo(
+    ({ city }) => {
     const map = useMap();
     useEffect(() => {
       if (!city || city === "All") {
         return;
       }
       let center = chennaiCenter;
-      if (city === "kochi") center = kochiCenter;
-      map.flyTo(center, 11, {
+      if (city === "Kochi") center = kochiCenter;
+      map.flyTo(center, 12, {
         animate: true,
         duration: 3,
         easeLinearity: 0.25
       });
     }, [city, map]);
     return null;
-  });
+  }
+);
   useEffect(() => {
     // axios.get("/getbots").then((res) => {
     //   console.log(res);
@@ -306,8 +309,7 @@ const Map = () => {
               Battery: {Math.floor(selectedPin.data[0].Battery)}%
             </div>
             <div className="d-card bg-amber-200 pl-[10px] pt-[10px] h-[50px]">
-              Didtance Covered:{" "}
-              {Math.round(selectedPin.data[0].DistanceCovered)} KM
+              Didtance Covered: {Math.round(selectedPin.data[0].DistanceCovered)} KM
             </div>
             <div className="d-card bg-amber-200 pl-[10px] pt-[10px] h-[50px]">
               Wastetraystatus: {selectedPin.data[0].Wastetraystatus}
