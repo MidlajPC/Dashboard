@@ -58,7 +58,7 @@ const Analysis = () => {
         });
       }
       setfilteredLogs(filtered);
-      console.log(filteredLogs);
+      console.log(filteredLogs)
     };
     handleFilter();
   }, [search, botData]);
@@ -355,40 +355,43 @@ const Analysis = () => {
               <th className="tblhdng">Bot Name</th>
               <th className="tblhdng">Location</th>
               <th className="tblhdng">Status</th>
-              {/* <th className="tblhdng">Operator Name</th>
-              <th className="tblhdng">Operator Email</th> */}
+              <th className="tblhdng">Operator Name</th>
+              <th className="tblhdng">Operator Email</th>
               <th className="tblhdng">Date</th>
             </tr>
           </thead>
           <tbody>
-            {filteredLogs?.flatMap((log, idx) => {
-              console.log(log);
-              return log.data.map((data) => (
-                <tr key={`${log._id} - ${idx}`} className="bg-e-o">
-                  <td className="tblhdng ">{idx + 1}</td>
-                  <td className="tblhdng ">{log.UniqueCode}</td>
-                  <td className="tblhdng"> {log.name}</td>
-                  <td className="tblhdng"> {data.position.city}</td>
-                  <td className="tblhdng ">{data.Status}</td>
-                  {/* <td className="tblhdng max-w-[500px] break-words "> */}
-                  {/* {data.operator.name} */}
-                  {/* </td> */}
-                  {/* <td className="tblhdng max-w-[500px] break-words "> */}
-                  {/* {data.operator.email} */}
-                  {/* </td> */}
-                  <td className="tblhdng">
-                    {new Date(data.date).toLocaleDateString("en-US", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric"
-                      // hour: "2-digit",
-                      // minute: "2-digit",
-                      // hour12: true
-                    })}
-                  </td>
-                </tr>
-              ));
-            })}
+            {filteredLogs?.flatMap((log, idx) =>{
+              console.log(log)
+              return (
+                 log.data.map((data)=>(
+                  <tr key={`${log._id} - ${idx}`} className="bg-e-o">
+                    <td className="tblhdng ">{idx + 1}</td>
+                    <td className="tblhdng ">{log.UniqueCode}</td>
+                    <td className="tblhdng"> {log.name}</td>
+                    <td className="tblhdng"> {data.position.city}</td>
+                    <td className="tblhdng ">{data.Status}</td>
+                    <td className="tblhdng max-w-[500px] break-words ">
+                      {/* {data.operator.name} */}
+                    </td>
+                    <td className="tblhdng max-w-[500px] break-words ">
+                      {data.operator.email}
+                    </td>
+                    <td className="tblhdng">
+                      {new Date(data.date).toLocaleDateString("en-US", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        // hour: "2-digit",
+                        // minute: "2-digit",
+                        // hour12: true
+                      })}
+                    </td>
+                  </tr>
+                 ))
+              )
+            }
+            )}
           </tbody>
         </table>
       </div>
