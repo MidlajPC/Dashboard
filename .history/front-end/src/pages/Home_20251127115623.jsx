@@ -122,7 +122,7 @@ const Home = () => {
       </div>
 
       {/* header and outlet div */}
-      <div className=" shadow-2xl flex flex-col flex-1">
+      <div className=" shadow-2xl flex flex-col flex- bg-amber-200 ">
         <div className="">
           <Header />
         </div>
