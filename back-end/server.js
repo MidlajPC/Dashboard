@@ -12,10 +12,27 @@ const bcrypt = require("bcrypt");
 const { botsocket } = require("./controller/bot.controller");
 const http = require("http");
 const { Server } = require("socket.io");
+const allowedOrigins = process.env.BASE_URL.split(",");
 
 const app = express();
-app.use(cors({ origin: process.env.BASE_URL, credentials: true }));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow REST tools, mobile apps, etc.
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  }),
+);
+
 // app.use(cors({ origin: "https://dashboard-henna-nu-36.vercel.app", credentials: true }));
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -26,14 +43,14 @@ dbconnect();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.BASE_URL,
-    credentials: true
-  }
+    origin: allowedOrigins,
+    credentials: true,
+  },
 });
 
 io.on("connection", async (socket) => {
   try {
-    console.log("first")
+    console.log("first");
     const cookies = cookie.parse(socket.request.headers.cookie || "");
     const token = cookies.authToken;
 

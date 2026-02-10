@@ -10,9 +10,9 @@ import { UserProvider } from "./context/UserContext.jsx";
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <ThemeProvider>
-      <UserProvider>
+      {/* <UserProvider> */}
         <App />
-      </UserProvider>
+      {/* </UserProvider> */}
     </ThemeProvider>
   </BrowserRouter>
 );

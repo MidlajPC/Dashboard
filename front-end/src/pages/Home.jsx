@@ -18,8 +18,8 @@ import { toast } from "react-toastify";
 import { useUserDetails } from "../context/UserContext";
 import { SiHelpscout } from "react-icons/si";
 import socket from "../config/socket";
+import Sidebar from "../components/Sidebar";
 const Home = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const currentsection = (path) => {
     switch (path) {
@@ -37,99 +37,20 @@ const Home = () => {
         return "Unknown";
     }
   };
-  const { userDetails, setuserDetails } = useUserDetails();
-  const role = userDetails?.role;
+  // const { userDetails, setuserDetails } = useUserDetails();
+  // const role = userDetails?.role;
   const activeSection = currentsection(location.pathname);
-  const handleLogout = () => {
-    navigate("/login");
-    axios
-      .post("/logout")
-      .then((res) => {
-        localStorage.removeItem("userId");
-        toast.success("Logged out successfully");
-        socket.disconnect();
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error("Logout failed");
-      });
-  };
-  const [issidebarOpen, setissidebarOpen] = useState(false);
-  const togglesidebar = () => {
-    if (window.innerWidth < 640) {
-      setissidebarOpen((prev) => !prev);
-    }
-  };
+
   return (
     <div
-      className="h-screen flex flex-row home-bg overflow-x-hidden overflow-y-auto"
+      id="main-wrapper"
+      data-layout="vertical"
+      data-sidebar-style="full"
+      className="show h-screen flex flex-row home-bg overflow-x-hidden overflow-y-auto"
       // style={{ backgroundImage: `url(${bg})` }}
     >
-      <div
-        className={` sidebar flex-shrink-0 !z-50 sidebar w-[30px] lg:w-[60px] backdrop-blur-2xl flex flex-col justify-between ${
-          issidebarOpen ? "!w-[135px]" : "w-[30px] lg:w-[60px]"
-        } `}
-      >
-        <div className="flex flex-col  gap-2">
-          <div className="flex sidebar-div items-center title-div">
-            <SiHelpscout className="icons" onClick={togglesidebar} />
-            <p className="sidebar-text !text-[14px] md:!text-xl ">SCOUT V12</p>
-          </div>
-          <Link to={"/"} className="">
-            <div className="sidebar-div mt-5">
-              <MdDashboard className="icons" />
-              <span className="sidebar-text ">Overview</span>
-            </div>
-          </Link>
-          {role === "admin" && (
-            <>
-              <Link to={"livemap"} className="">
-                <div className="sidebar-div">
-                  <FaMapMarkedAlt className="icons text-[var(--text-color)]" />
-                  <span className="sidebar-text text-[var(--text-color)] ">
-                    Live Map
-                  </span>
-                </div>
-              </Link>
-              <Link to={"usermanagement"} className="">
-                <div className="sidebar-div">
-                  <FaUsersCog className="icons text-[var(--text-color)]" />
-                  <span className="sidebar-text overflow-hidden text-[var(--text-color)] ">
-                    User Management
-                  </span>
-                </div>
-              </Link>
-            </>
-          )}
-          {(role === "admin" || role === "analyst") && (
-            <>
-              <Link to={"analysis"} className="">
-                <div className="sidebar-div">
-                  <TbDeviceAnalytics className="icons text-[var(--text-color)]" />
-                  <span className="sidebar-text text-[var(--text-color)] ">
-                    Analysis
-                  </span>
-                </div>
-              </Link>
-              <Link to={"userlog"} className="">
-                <div className="sidebar-div">
-                  <FaClipboardList className="icons text-[var(--text-color)]" />
-                  <span className="sidebar-text text-[var(--text-color)] ">
-                    User Logs
-                  </span>
-                </div>
-              </Link>
-            </>
-          )}
-        </div>
-        <div
-          className=" sidebar-div mb-1 cursor-pointer "
-          onClick={handleLogout}
-        >
-          <CiLogout className="icons text-[var(--text-color)]" />
-          <span className="sidebar-text text-[var(--text-color)]">Logout</span>
-        </div>
-      </div>
+
+        <Sidebar />
 
       {/* header and outlet div */}
       <div className=" min-w-0 shadow-2xl flex flex-col flex-1 ">
@@ -145,7 +66,7 @@ const Home = () => {
                   {activeSection}
                 </span>
               </div>
-              <div className="flex-1 outlet w-full max-w-full rounded-b-sm overflow-y-auto min-h-0">
+              <div className=" flex-1 outlet w-full max-w-full rounded-b-sm overflow-y-auto min-h-0">
                 <Outlet />
               </div>
             </div>

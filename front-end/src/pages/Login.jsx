@@ -10,10 +10,10 @@ import { useUserDetails } from "../context/UserContext";
 import socket from "../config/socket";
 
 const Login = () => {
-  const { userDetails, setuserDetails } = useUserDetails();
+  // const { userDetails, setuserDetails } = useUserDetails();
   const [formvalue, setformvalue] = useState({
     email: "",
-    password: ""
+    password: "",
   });
   const [err, seterr] = useState({});
   const [submitted, setsubmitted] = useState(false);
@@ -40,9 +40,9 @@ const Login = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const ldng = toast.loading("Loading");
     try {
       setsubmitted(true);
-      const ldng = toast.loading("Loading");
       const errors = validate(formvalue);
       if (Object.keys(errors).length === 0) {
         seterr({});
@@ -50,35 +50,36 @@ const Login = () => {
         seterr(errors);
         return;
       }
-      await axios
-        .post("/login", formvalue, { withCredentials: true })
-        .then((res) => {
-          toast.update(ldng, {
-            render: "welcome",
-            type: "success",
-            isLoading: false,
-            autoClose: 1500
-          });
-          console.log(res);
-          localStorage.setItem("userId", res.data.user.id);
-          setuserDetails(res.data.user);
-          navigate("/");
-        })
-        .catch((error) => {
-          toast.update(ldng, {
-            render: error.response.data.message,
-            type: "error",
-            isLoading: false,
-            autoClose: 1000
-          });
-          setsubmitted(false);
-        });
+      // await axios
+      // .post("/login", formvalue, { withCredentials: true })
+      // .then((res) => {
+      //   toast.update(ldng, {
+      //     render: "welcome",
+      //     type: "success",
+      //     isLoading: false,
+      //     autoClose: 1500,
+      //   });
+      //   console.log(res);
+      //   localStorage.setItem("userId", res.data.user.id);
+      //   setuserDetails(res.data.user);
+      //   navigate("/");
+      // })
+      // .catch((error) => {
+      //   toast.update(ldng, {
+      //     render: error.response.data.message,
+      //     type: "error",
+      //     isLoading: false,
+      //     autoClose: 1000,
+      //   });
+      //   setsubmitted(false);
+      // });
+      navigate("/");
     } catch (error) {
       console.log(error);
       toast.update(ldng, {
         render: error.message || error,
         type: "error",
-        isLoading: false
+        isLoading: false,
       });
       setsubmitted(false);
     }
@@ -109,7 +110,7 @@ const Login = () => {
               style={{
                 backgroundImage: `url(${loginbg})`,
                 backgroundSize: "135%",
-                backgroundPosition: "40% center"
+                backgroundPosition: "40% center",
               }}
             >
               {/* <div className="absolute h-full w-full bg-blue-600 rounded-l-xl opacity-70 "></div> */}
