@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../css/Bg.css";
 import "../css/login.css";
-import loginbg from "../assets/bg/login.jpg";
+import loginbg from "../assets/bg/login_cover.png";
 import logo from "../assets/logo/drubelabs.png";
 import { toast } from "react-toastify";
 import axios from "../config/axios.config";
 import { useUserDetails } from "../context/UserContext";
-import socket from "../config/socket";
 
 const Login = () => {
-  // const { userDetails, setuserDetails } = useUserDetails();
+  const { setuserDetails } = useUserDetails();
   const [formvalue, setformvalue] = useState({
     email: "",
     password: "",
@@ -50,29 +49,29 @@ const Login = () => {
         seterr(errors);
         return;
       }
-      // await axios
-      // .post("/login", formvalue, { withCredentials: true })
-      // .then((res) => {
-      //   toast.update(ldng, {
-      //     render: "welcome",
-      //     type: "success",
-      //     isLoading: false,
-      //     autoClose: 1500,
-      //   });
-      //   console.log(res);
-      //   localStorage.setItem("userId", res.data.user.id);
-      //   setuserDetails(res.data.user);
-      //   navigate("/");
-      // })
-      // .catch((error) => {
-      //   toast.update(ldng, {
-      //     render: error.response.data.message,
-      //     type: "error",
-      //     isLoading: false,
-      //     autoClose: 1000,
-      //   });
-      //   setsubmitted(false);
-      // });
+      await axios
+        .post("/login", formvalue, { withCredentials: true })
+        .then((res) => {
+          toast.update(ldng, {
+            render: "welcome",
+            type: "success",
+            isLoading: false,
+            autoClose: 1500,
+          });
+          console.log(res);
+          localStorage.setItem("userId", res.data.user.id);
+          setuserDetails(res.data.user);
+          navigate("/");
+        })
+        .catch((error) => {
+          toast.update(ldng, {
+            render: error.response.data.message,
+            type: "error",
+            isLoading: false,
+            autoClose: 1000,
+          });
+          setsubmitted(false);
+        });
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -104,16 +103,15 @@ const Login = () => {
         </div>
         {/* <div className="blur-div"></div> */}
         <div className="relative z-10 flex items-center justify-center w-full h-screen ">
-          <div className="bg-[#111419] w-[80%] h-[80%] rounded-xl parent ">
+          <div className="bg-[#111419] w-[80%] h-[70%] lg:h-[80%] rounded-xl parent ">
             <div
               className="relative h-full hide-mobile w-[40%] sm:w-[45%] md:w-[50%] lg:w-[60%] rounded-l-xl bg-cover"
               style={{
                 backgroundImage: `url(${loginbg})`,
-                backgroundSize: "135%",
-                backgroundPosition: "40% center",
+                backgroundSize: "130%",
+                backgroundPosition: " center",
               }}
             >
-              {/* <div className="absolute h-full w-full bg-blue-600 rounded-l-xl opacity-70 "></div> */}
               <a
                 href="https://drubelabs.com/"
                 className=" no-underline hover:text-red-500 text-md sm:text-2xl md:text-3xl lg:text-5xl w-fit"
@@ -122,11 +120,6 @@ const Login = () => {
                   SCOUT E750
                 </p>
               </a>
-              {/* <div className="relative h-full flex flex-col gap-1  pl-2 md:pl-5">
-                <p className="text-md sm:text-xl md:text-5xl lg:text-5xl mt-20 z-50 ">
-                  WELCOME BACK !
-                </p>
-              </div> */}
             </div>
             <div className=" child-b w-[60%] sm:w-[55%] md:w-[50%] lg:w-[40%] flext-1 text-white flex flex-col gap-5 justify-center items-center ">
               <h3 className=" text-lg sm:text-xl md:text-2xl lg:text-4xl font-[700] font-[Poppins] ">

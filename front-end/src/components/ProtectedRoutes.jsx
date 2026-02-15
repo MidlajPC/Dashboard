@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, Outlet, replace, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import axios from "../config/axios.config";
 const ProtectedRoutes = () => {
   const navigate = useNavigate();

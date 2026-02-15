@@ -29,10 +29,10 @@ const Overview = () => {
         <DistanceChart />
       </div>
       <div className=" h-[350px] flex">
-        {/* <div className="flex flex-col">
+        <div className="flex flex-col">
           <div className="card flex-1">Total Bots Active </div>
           <div className="card flex-1">1</div>
-        </div> */}
+        </div>
       </div>
     </div>
   );

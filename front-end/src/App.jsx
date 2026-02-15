@@ -15,13 +15,13 @@ import { BotProvider } from "./context/BotContext";
 import { useUserDetails } from "./context/UserContext";
 import AutoLogout from "./config/AutoLogout";
 import ThemeApplier from "./context/ThemeApplier";
-import { Toaster } from "@/components/ui/sonner"
-import { Spinner } from "@/components/ui/spinner"
+import { Toaster } from "@/components/ui/sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 const App = () => {
-  // const { userDetails, setuserDetails } = useUserDetails();
+  const { userDetails } = useUserDetails();
   const { isDark } = useTheme();
-  // const role = userDetails?.role;
+  const role = userDetails?.role;
   const location = useLocation();
   const isLoginpage = location.pathname === "/login";
   return (
@@ -35,47 +35,47 @@ const App = () => {
             <Route path="/login" element={<Login />} />
           </Routes>
         ) : (
-          // <AutoLogout>
-          <>
-            {/* {userDetails ? ( */}
-              <BotProvider>
-                <Routes>
-                  {/* <Route element={<ProtectedRoutes />}> */}
-                    <Route path="/" element={<Home />}>
-                      {/* {(role === "operator" ||
-                        role === "admin" ||
-                        role === "analyst") && (
-                        <> */}
-                          <Route index element={<Overview />} />
-                          <Route path="livemap" element={<Map />} />
-                        {/* </> */}
-                      {/* )} */}
-                      {/* {role === "admin" && ( */}
-                        <>
-                          <Route
-                            path="usermanagement"
-                            element={<UserManagement />}
-                          />
-                        </>
-                      {/* )} */}
-                      {/* {(role === "admin" || role === "analyst") && ( */}
-                        <>
-                          <Route path="userlog" element={<UserLogs />} />
-                          <Route path="analysis" element={<Analysis />} />
-                        </>
-                      {/* )} */}
+          <AutoLogout>
+            <>
+              {userDetails ? (
+                <BotProvider>
+                  <Routes>
+                    <Route element={<ProtectedRoutes />}>
+                      <Route path="/" element={<Home />}>
+                        {(role === "operator" ||
+                          role === "admin" ||
+                          role === "analyst") && (
+                          <>
+                            <Route index element={<Overview />} />
+                            <Route path="livemap" element={<Map />} />
+                          </>
+                        )}
+                        {role === "admin" && (
+                          <>
+                            <Route
+                              path="usermanagement"
+                              element={<UserManagement />}
+                            />
+                          </>
+                        )}
+                        {(role === "admin" || role === "analyst") && (
+                          <>
+                            <Route path="userlog" element={<UserLogs />} />
+                            <Route path="analysis" element={<Analysis />} />
+                          </>
+                        )}
+                      </Route>
+                      <Route path="profile" element={<Profile />} />
                     </Route>
-                    <Route path="profile" element={<Profile />} />
-                  {/* </Route> */}
-                </Routes>
-              </BotProvider>
-            {/* ) : ( */}
-              <div>
-                <Spinner />
-              </div>
-            {/* )} */}
+                  </Routes>
+                </BotProvider>
+              ) : (
+                <div>
+                  <Spinner />
+                </div>
+              )}
             </>
-          // </AutoLogout>
+          </AutoLogout>
         )}
       </div>
     </>

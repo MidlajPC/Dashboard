@@ -6,11 +6,7 @@ import {
   Users,
   BarChart3,
   ClipboardList,
-  LogOut,
   Compass,
-  ChevronLeft,
-  ChevronRight,
-  ArrowRight,
 } from "lucide-react";
 import { cn } from "../lib/utils";
 import "../css/sidebar.css";
@@ -52,7 +48,6 @@ export default function Sidebar({ role = "admin" }) {
     },
   ];
 
-  const [open, setopen] = useState(true);
   return (
     <div
       className={cn(
@@ -77,26 +72,15 @@ export default function Sidebar({ role = "admin" }) {
       </div>
 
       {/* Collapse Toggle */}
-      <div className=" absolute -right-16 top-3 z-50">
-        {open ? (
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="group flex flex-col justify-center gap-1.5 w-8 h-8 "
-          >
-            <span className="line" />
-            <span className="line" />
-            <span className="line short" />
-          </button>
-        ) : (
-          <ArrowRight
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className={cn(
-              "w-4 h-4 transition-transform",
-              isCollapsed && "rotate-180",
-            )}
-            style={{ color: "var(--primary-text-color)" }}
-          />
-        )}
+      <div className=" absolute -right-16 top-4 z-50">
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="group flex flex-col justify-center gap-1.5 w-8 h-8 "
+        >
+          <span className="line" />
+          <span className="line" />
+          <span className="line short" />
+        </button>
       </div>
 
       {/* Navigation */}

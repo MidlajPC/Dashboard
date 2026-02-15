@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import "leaflet/dist/leaflet.css";
@@ -10,9 +9,9 @@ import { UserProvider } from "./context/UserContext.jsx";
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <ThemeProvider>
-      {/* <UserProvider> */}
+      <UserProvider>
         <App />
-      {/* </UserProvider> */}
+      </UserProvider>
     </ThemeProvider>
   </BrowserRouter>
 );

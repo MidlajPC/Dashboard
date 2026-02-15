@@ -11,8 +11,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   BadgeCheckIcon,
-  BellIcon,
-  CreditCardIcon,
   LogOutIcon,
   Palette,
   UserRoundPen,
@@ -21,8 +19,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useTheme } from "@/context/ThemeProvider";
 import axios from "../config/axios.config";
+import socket from "@/config/socket";
 
-export default function Header() {
+export default function Header({ activeSection }) {
   const navigate = useNavigate();
   const handleLogout = () => {
     navigate("/login");
@@ -30,7 +29,7 @@ export default function Header() {
       .post("/logout")
       .then((res) => {
         localStorage.removeItem("userId");
-        toast.success("Logged out successfully");
+        toast.success(res.data.message || "Logged out successfully");
         socket.disconnect();
       })
       .catch((err) => {
@@ -44,10 +43,10 @@ export default function Header() {
     navigate("/profile");
   };
 
-    const { isDark, setisDark } = useTheme();
-    const handleTheme = (e) => {
-      setisDark(!isDark);
-    };
+  const { isDark, setisDark } = useTheme();
+  const handleTheme = (e) => {
+    setisDark(!isDark);
+  };
   return (
     <div
       className=""
@@ -58,9 +57,12 @@ export default function Header() {
           style={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "end",
+            justifyContent: "space-between",
           }}
         >
+          <span className=" text-[var(--text-color)] text-lg md:text-xl font-bold ml-16">
+            {activeSection}
+          </span>
           {/* Right: controls */}
           <ul
             style={{

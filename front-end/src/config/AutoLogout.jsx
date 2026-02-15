@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "./axios.config";
+import { toast } from "sonner";
+import socket from "./socket";
 
 const AutoLogout = ({ children }) => {
   const navigate = useNavigate();
@@ -10,7 +12,7 @@ const AutoLogout = ({ children }) => {
       .post("/logout", { message: "logged out due to inactivity" })
       .then((res) => {
         localStorage.removeItem("userId");
-        toast.success("Logged out successfully");
+        toast.success(res.data.message || "Logged out successfully");
         socket.disconnect();
         navigate("/login");
       })
